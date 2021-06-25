@@ -2,36 +2,84 @@
 
 namespace RG_code.AstVisitors
 {
-    internal class TypeError
+    public class TypeError
     {
         public enum ErrorType
         {
             NotDeclared,
             DoubleDeclared,
-            IncorrectUsage
+            IncorrectUsage,
+            ExpressionInconsistency,
+            BadDeclaration
         }
-
-        public ErrorType TypeOfError { get; set; }
-        private string NodeInformation { get; set; }
 
         public TypeError(Ast node, ErrorType typeOfError)
         {
+            Node = node;
             TypeOfError = typeOfError;
             NodeInformation = node.ToString();
         }
 
+        public TypeError(Ast node, ErrorType typeOfError, Type t1, Type t2) : this(node, typeOfError, t1)
+        {
+            SecondType = t2;
+        }
+
+        public TypeError(Ast node, ErrorType typeOfError, Type t1, Type t2, Type expected) : this(node, typeOfError, t1,
+            t2)
+        {
+            Expected = expected;
+        }
+
+        public TypeError(Ast node, ErrorType typeOfError, Type t1) : this(node, typeOfError)
+        {
+            FirstType = t1;
+        }
+
+
+        public TypeError(Ast node, ErrorType typeOfError, string optionalText) : this(node, typeOfError)
+        {
+            OptionalText += optionalText;
+        }
+
+        public ErrorType TypeOfError { get; set; }
+
+        private string _nodeInfo = " ";
+        private string NodeInformation
+        {
+            get
+            {
+                return _nodeInfo;
+            }
+            set
+            {
+                _nodeInfo = value;
+            }
+        }
+
+        private Type FirstType { get; set; }
+
+        private Type SecondType { get; set; }
+        private Type Expected { get; set; }
+
+        private string OptionalText { get; set; } = ", ";
+        private Ast Node { get; set; }
+
         public override string ToString()
         {
-            string errorMessage = string.Empty;
             switch (TypeOfError)
             {
                 case ErrorType.NotDeclared:
-                    return "Variable is used, but not declared: " + NodeInformation;
-                    
+                    return "Variable is used, but not declared: " + NodeInformation + OptionalText;
+
                 case ErrorType.DoubleDeclared:
-                    return "Variable is declared more than once: " + NodeInformation;
+                    return "Variable is declared more than once: " + NodeInformation + OptionalText;
                 case ErrorType.IncorrectUsage:
-                    return "Variable is used in wrong context: " + NodeInformation;
+                    return "Expression is used in wrong context: " + NodeInformation + OptionalText;
+                case ErrorType.ExpressionInconsistency:
+                    return $"An expression was inconsistent.  Got type {FirstType} and {SecondType} in " +
+                           NodeInformation + OptionalText;
+                case ErrorType.BadDeclaration: return $"BadDeclaration: Expected {FirstType}, but got {SecondType} as expression, {NodeInformation}";
                 default: return "OTHER ERROR";
             }
         }

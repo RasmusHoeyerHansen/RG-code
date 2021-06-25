@@ -20,7 +20,8 @@ namespace RG_code
             
             
             RGCodeParser.ProgramContext cst = parser.program();
-            var ast = (Program) new AstBuilderVisitor<Ast>().VisitProgram(cst);
+            
+            Program ast = (Program) new AstBuilderVisitor<Ast>().VisitProgram(cst);
             
             PrettyPrinter printer = new PrettyPrinter();
             //ast.Accept(printer);
@@ -28,6 +29,11 @@ namespace RG_code
             DeclarationChecker checker = new DeclarationChecker();
             ast.Accept(checker);
             Console.WriteLine(checker.GetErrorText());
+
+            ExpressionUsageChecker exprChecker = new ExpressionUsageChecker(checker.ScopeStack);
+            ast.Accept(exprChecker);
+            Console.WriteLine(exprChecker.GetErrorText());
+
 
         }
     }

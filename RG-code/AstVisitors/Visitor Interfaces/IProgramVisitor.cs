@@ -2,7 +2,7 @@
 
 namespace RG_code
 {
-    public interface IProgramVisitor<out T> where T : Ast
+    public interface IProgramVisitor<out T>
     {
         public T Visit(Program node);
     }

@@ -2,10 +2,10 @@
 {
     public enum Type
     {
-        NotSet,
-        Integer,
+        NotDeclared,
         Number,
         Bool,
-        Point
+        Point,
+        Ok, Wrong
     }
 }

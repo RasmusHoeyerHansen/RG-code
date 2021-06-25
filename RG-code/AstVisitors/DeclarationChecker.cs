@@ -1,44 +1,13 @@
-﻿using System.Collections.Generic;
-using RG_code.AST;
+﻿using RG_code.AST;
 using RG_code.AstVisitors.Visitor_Interfaces;
 
 namespace RG_code.AstVisitors
 {
-    public sealed partial class DeclarationChecker : IProgramVisitor<Ast>
+    /// <summary>
+    /// Methods used to build the scopes
+    /// </summary>
+    public sealed class DeclarationChecker : StackTraveller, IStatementVisitor<Ast>, IProgramVisitor<Ast>
     {
-        public DeclarationChecker()
-        {
-            ScopeStack.Push(new Scope(null));
-        }
-        private Stack<Scope> ScopeStack { get; set; } = new Stack<Scope>();
-        private List<TypeError> Errors { get; set; } = new List<TypeError>();
-
-        public string GetErrorText()
-        {
-            string result = string.Empty;
-
-            if (Errors.Count == 0)
-                return result;
-                    
-            result += "Type Errors: \n";
-            foreach (TypeError typeErrors in Errors)
-            {
-                result += typeErrors.ToString() + '\n';
-            }
-            return result;
-        }
-
-        private void EnterScope()
-        {
-            ScopeStack.Push(new Scope(ScopeStack.Peek()));
-        }
-
-        
-        private void ExitScope()
-        {
-            ScopeStack.Pop();
-        }
-
         public Ast Visit(Program node)
         {
             foreach (Ast nodeProgramStatement in node.ProgramStatements)
@@ -51,13 +20,6 @@ namespace RG_code.AstVisitors
 
             return node;
         }
-    }
-
-    /// <summary>
-    /// Methods used to build the scopes
-    /// </summary>
-    partial class DeclarationChecker : StatementVisitor<Ast>
-    {
         public Ast Visit(GreaterThan node)
         {
             if (node.LeftHandSide is NameReference l)
@@ -127,10 +89,8 @@ namespace RG_code.AstVisitors
 
         public Ast Visit(Assign node)
         {
-            if (node.Value is NameReference n)
-            {
-                Visit(n);
-            }
+            Visit((dynamic)node.Value);
+            
 
             return node;
         }
@@ -149,6 +109,8 @@ namespace RG_code.AstVisitors
         public Ast Visit(Declaration node)
         {
             
+            //Visit values
+            Visit(node.AssignedValue);
             //If already declared, add error, else add the declaration
             if (IsDeclared(node))
             {
@@ -162,29 +124,7 @@ namespace RG_code.AstVisitors
             return null;
         }
 
-        private bool IsDeclared(string nodeName)
-        {
-            Scope foundScope;
-            ScopeStack.TryPeek(out foundScope);
-            Declaration foundDeclaration;
 
-            while (foundScope != null)
-            {
-                if (foundScope.ContainedVariables.TryGetValue(nodeName, out foundDeclaration))
-                {
-                    return true;
-                }
-
-                foundScope = foundScope.ParentScope;
-            }
-
-            return false;
-        }
-        
-        private bool IsDeclared(Declaration node)
-        {
-            return IsDeclared(node.Name);
-        }
 
         public Ast Visit(Plus node)
         {

@@ -16,7 +16,7 @@ namespace RG_code.AST
         public override string ToString()
         {
             
-            return "Multiplication node " + base.ToString();
+            return "Multiplication " + base.ToString();
         }
     }
 }

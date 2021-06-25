@@ -2,7 +2,7 @@
 
 namespace RG_code.AST
 {
-    public class Point : Ast, IPointVisitable<Ast>
+    public class Point : Expression, IPointVisitable<Ast>
     {
         public Point(Ast xValue, Ast yValue, IToken information) : base(information)
         {
@@ -28,7 +28,7 @@ namespace RG_code.AST
         public override string ToString()
         {
             
-            return "Point node " + base.ToString();
+            return "Point " + base.ToString();
         }
     }
 }

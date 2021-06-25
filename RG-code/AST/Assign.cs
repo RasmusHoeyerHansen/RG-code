@@ -25,7 +25,7 @@ namespace RG_code.AST
         public override string ToString()
         {
             
-            return "Assign node " + base.ToString();
+            return "Assign " + base.ToString();
         }
     }
 }

@@ -1,6 +1,6 @@
 ﻿namespace RG_code.AST
 {
-    public interface IInfixMathVisitor<out T> where T : Ast
+    public interface IInfixMathVisitor<out T>
     {
         
         public  T Visit(Plus node);

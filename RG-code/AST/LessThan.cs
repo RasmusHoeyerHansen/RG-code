@@ -16,7 +16,7 @@ namespace RG_code.AST
         public override string ToString()
         {
             
-            return "Less Than node " + base.ToString();
+            return "Less Than " + base.ToString();
         }
     }
 }

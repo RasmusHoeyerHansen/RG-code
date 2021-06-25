@@ -4,7 +4,7 @@ namespace RG_code.AST
 {
     public class Number : Expression, IMathVisitable<Ast>
     {
-        public double Value { get; set; }
+        public double Value { get; private set; }
 
         public Number(double value, IToken information) : base(information)
         {
@@ -19,7 +19,7 @@ namespace RG_code.AST
         public override string ToString()
         {
             
-            return "Number node " + base.ToString();
+            return "Number " + base.ToString();
         }
     }
 }

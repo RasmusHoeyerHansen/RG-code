@@ -27,7 +27,7 @@ namespace RG_code.AST
         public override string ToString()
         {
             
-            return "Line node " + base.ToString();
+            return "Line " + base.ToString();
         }
     }
 }

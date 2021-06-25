@@ -30,7 +30,7 @@ namespace RG_code.AST
         public override string ToString()
         {
             
-            return "Curve node " + base.ToString();
+            return "Curve " + base.ToString();
         }
     }
 }

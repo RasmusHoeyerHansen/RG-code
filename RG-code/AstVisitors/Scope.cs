@@ -3,7 +3,7 @@ using RG_code.AST;
 
 namespace RG_code.AstVisitors
 {
-    sealed internal class Scope
+    public class Scope
     {
         public Dictionary<string, Declaration> ContainedVariables { get; private set; } =
             new Dictionary<string, Declaration>();

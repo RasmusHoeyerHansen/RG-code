@@ -47,9 +47,6 @@ namespace RG_code.AstVisitors
                 case "point":
                     result.Type = Type.Point;
                     break;
-                case "int":
-                    result.Type = Type.Integer;
-                    break;
             }
 
             return result;
@@ -105,7 +102,7 @@ namespace RG_code.AstVisitors
         public override Ast VisitPointExpression(RGCodeParser.PointExpressionContext context)
         {
             Ast lhs = Visit(context.lhs);
-            Ast rhs = Visit(context.lhs);
+            Ast rhs = Visit(context.rhs);
 
             return new Point(lhs, rhs, context.Start);
         }

@@ -4,7 +4,6 @@ namespace RG_code.AST
 {
     public class Declaration : Statement, IDeclarationVisitable<Ast>
     {
-        public Type Type { get; set; } = Type.NotSet;
         public string Name { get; private set; }
 
         public Declaration(Ast assignedValue, IToken information) : base(information)

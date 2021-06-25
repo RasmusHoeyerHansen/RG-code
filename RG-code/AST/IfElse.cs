@@ -30,7 +30,7 @@ namespace RG_code.AST
         public override string ToString()
         {
             
-            return "If-else node " + base.ToString();
+            return "If-else " + base.ToString();
         }
     }
 }

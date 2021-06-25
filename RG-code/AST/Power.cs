@@ -19,7 +19,7 @@ namespace RG_code.AST
         public override string ToString()
         {
             
-            return "Power node " + base.ToString();
+            return "Power " + base.ToString();
         }
 
     }

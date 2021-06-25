@@ -30,7 +30,7 @@ namespace RG_code.AST
         public override string ToString()
         {
             
-            return "Loop node " + base.ToString();
+            return "Loop " + base.ToString();
         }
     }
 }

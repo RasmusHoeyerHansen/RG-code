@@ -16,7 +16,7 @@ namespace RG_code.AST
         public override string ToString()
         {
             
-            return "Divide node " + base.ToString();
+            return "Divide " + base.ToString();
         }
     }
     

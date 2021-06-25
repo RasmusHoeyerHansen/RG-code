@@ -28,7 +28,7 @@ namespace RG_code.AST
         public override string ToString()
         {
             
-            return "If node " + base.ToString();
+            return "If " + base.ToString();
         }
         
     }

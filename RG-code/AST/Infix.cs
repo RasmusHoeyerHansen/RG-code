@@ -9,6 +9,7 @@ namespace RG_code.AST
         }
         public Infix(IToken information) : base(information)
         {
+            
         }
     }
 }
