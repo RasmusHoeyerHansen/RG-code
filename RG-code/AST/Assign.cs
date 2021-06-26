@@ -3,7 +3,7 @@ using Antlr4.Runtime;
 
 namespace RG_code.AST
 {
-    public class Assign : Ast, IAssignVisitable<Ast>
+    public class Assign : Statement, IAssignVisitable<Ast>
     {
         public string Id { get; private set; }
 

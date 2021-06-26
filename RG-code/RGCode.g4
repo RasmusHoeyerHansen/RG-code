@@ -1,6 +1,6 @@
 grammar RGCode;
 program: statement+ EOF;
-statement: (assignment | vardec | move  | repeat |if |ifElse) ';';
+statement: (assignment | vardec | move  | repeat |if 'if'|ifElse 'else') ';';
 vardec: typeWord=Typeword assignment ;
 assignment: ID '=' expr ;
 
@@ -33,7 +33,7 @@ line: 'line from' from=point toCommands+  #lineCommand;
 curve: 'curve from' from=point toCommands+ 'with angle' angle=math #curveCommand;
 toCommands: ('to ' p=point) #to;
 
-repeat: 'repeat' 'until' cond=bool ScopeStart statement* ScopeEnd;
+repeat: 'repeat' 'until' cond=bool ScopeStart statement* ScopeEnd 'loop';
 
  
 

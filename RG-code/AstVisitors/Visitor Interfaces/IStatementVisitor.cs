@@ -2,7 +2,7 @@
 
 namespace RG_code.AstVisitors.Visitor_Interfaces
 {
-    public interface IStatementVisitor<out T> : IMovementVisitor<T>, IDeclarationVisitor<T>, ILoopVisitor<T>
+    public interface IStatementVisitor<out T> : IMovementVisitor<T>, IDeclarationVisitor<T>, ILoopVisitor<T>, IIfVisitor<T>
     {
         
     }

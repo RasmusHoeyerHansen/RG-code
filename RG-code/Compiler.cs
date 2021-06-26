@@ -23,7 +23,7 @@ namespace RG_code
             
             Program ast = (Program) new AstBuilderVisitor<Ast>().VisitProgram(cst);
             
-            PrettyPrinter printer = new PrettyPrinter();
+            //PrettyPrinter printer = new PrettyPrinter();
             //ast.Accept(printer);
 
             DeclarationChecker checker = new DeclarationChecker();

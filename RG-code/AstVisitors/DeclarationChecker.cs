@@ -4,259 +4,186 @@ using RG_code.AstVisitors.Visitor_Interfaces;
 namespace RG_code.AstVisitors
 {
     /// <summary>
-    /// Methods used to build the scopes
+    ///     Methods used to build the scopes
     /// </summary>
     public sealed class DeclarationChecker : StackTraveller, IStatementVisitor<Ast>, IProgramVisitor<Ast>
     {
         public Ast Visit(Program node)
         {
-            foreach (Ast nodeProgramStatement in node.ProgramStatements)
-            {
-                if (nodeProgramStatement is Statement s)
-                {
-                    Visit((dynamic)s);
-                }
-            }
+            foreach (Ast nodeProgramStatement in node.ProgramStatements) Visit((dynamic) nodeProgramStatement);
 
             return node;
         }
+
         public Ast Visit(GreaterThan node)
         {
-            if (node.LeftHandSide is NameReference l)
-            {
-                Visit(l);
-            }
-            
-            if (node.RightHandSide is NameReference r)
-            {
-                Visit(r);
-            }
-
+            Visit((dynamic)node.LeftHandSide);
+            Visit((dynamic)node.RightHandSide);
+            node.Type = Type.Bool;
             return node;
         }
 
         public Ast Visit(LessThan node)
         {
-            if (node.LeftHandSide is NameReference l)
-            {
-                Visit(l);
-            }
-            
-            if (node.RightHandSide is NameReference r)
-            {
-                Visit(r);
-            }
-
+            Visit((dynamic)node.LeftHandSide);
+            Visit((dynamic)node.RightHandSide);
+            node.Type = Type.Bool;
             return node;
         }
 
         public Ast Visit(Equals node)
         {
-            if (node.LeftHandSide is NameReference l)
-            {
-                Visit(l);
-            }
-            
-            if (node.RightHandSide is NameReference r)
-            {
-                Visit(r);
-            }
-
+            Visit((dynamic)node.LeftHandSide);
+            Visit((dynamic)node.RightHandSide);
+            node.Type = Type.Number;
             return node;
         }
 
         public Ast Visit(Loop node)
         {
-            if (node.Condition is NameReference n)
-            {
-                Visit(n);
-            }
-            
+            Visit((dynamic) node.Condition);
+
             EnterScope();
 
-            foreach (Ast ast in node.Body)
-            {
-                if (ast is Statement s)
-                {
-                    Visit((dynamic) s);
-                }
-            }
+            foreach (Ast ast in node.Body) Visit((dynamic) ast);
 
             ExitScope();
             return node;
-
         }
 
         public Ast Visit(Assign node)
         {
-            Visit((dynamic)node.Value);
-            
-
+            Ast q = Visit((dynamic) node.Value);
+            node.Type = q.Type;
             return node;
         }
 
         public Ast Visit(NameReference node)
         {
-            if (!IsDeclared(node.Name))
-            {
+            if (!IsDeclared(node.Name)) 
                 Errors.Add(new TypeError(node, TypeError.ErrorType.NotDeclared));
-            }
-            
+
             return node;
-      
         }
 
         public Ast Visit(Declaration node)
         {
-            
             //Visit values
             Visit(node.AssignedValue);
             //If already declared, add error, else add the declaration
             if (IsDeclared(node))
-            {
                 Errors.Add(new TypeError(node, TypeError.ErrorType.DoubleDeclared));
-            }
             else
-            {
-                ScopeStack.Peek().ContainedVariables.Add(node.Name,node);
-            }
+                ScopeStack.Peek().ContainedVariables.Add(node.Name, node);
+
             
             return null;
         }
 
 
-
         public Ast Visit(Plus node)
         {
-            if (node.LeftHandSide is NameReference l)
-            {
-                Visit(l);
-            }
-            
-            if (node.RightHandSide is NameReference r)
-            {
-                Visit(r);
-            }
-
+            Visit((dynamic)node.LeftHandSide);
+            Visit((dynamic)node.RightHandSide);
+            node.Type = Type.Number;
             return node;
         }
 
         public Ast Visit(Minus node)
         {
-            if (node.LeftHandSide is NameReference l)
-            {
-                Visit(l);
-            }
-            
-            if (node.RightHandSide is NameReference r)
-            {
-                Visit(r);
-            }
-
+            Visit((dynamic)node.LeftHandSide);
+            Visit((dynamic)node.RightHandSide);
+            node.Type = Type.Number;
             return node;
         }
 
         public Ast Visit(Multiplication node)
         {
-            if (node.LeftHandSide is NameReference l)
-            {
-                Visit(l);
-            }
-            
-            if (node.RightHandSide is NameReference r)
-            {
-                Visit(r);
-            }
+            Visit((dynamic)node.LeftHandSide);
+            Visit((dynamic)node.RightHandSide);
+            node.Type = Type.Number;
 
             return node;
         }
 
         public Ast Visit(Divide node)
         {
-            if (node.LeftHandSide is NameReference l)
-            {
-                Visit(l);
-            }
-            
-            if (node.RightHandSide is NameReference r)
-            {
-                Visit(r);
-            }
+            Visit((dynamic)node.LeftHandSide);
+            Visit((dynamic)node.RightHandSide);
+            node.Type = Type.Number;
 
             return node;
         }
 
         public Ast Visit(Power node)
         {
-            if (node.LeftHandSide is NameReference l)
-            {
-                Visit(l);
-            }
-            
-            if (node.RightHandSide is NameReference r)
-            {
-                Visit(r);
-            }
-
+            Visit((dynamic)node.LeftHandSide);
+            Visit((dynamic)node.RightHandSide);
+            node.Type = Type.Number;
             return node;
         }
 
         public Ast Visit(Number node)
         {
+            node.Type = Type.Number;
             return node;
         }
 
         public Ast Visit(Point node)
         {
-            if (node.XValue is NameReference l)
-            {
-                Visit(l);
-            }
-            
-            if (node.YValue is NameReference r)
-            {
-                Visit(r);
-            }
-
+            Visit((dynamic)node.XValue);
+            Visit((dynamic)node.YValue);
+            node.Type = Type.Point;
             return node;
         }
 
         public Ast Visit(Line node)
         {
-            if (node.FromPoint is NameReference n)
-            {
-                Visit(n);
-            }
+            Visit((dynamic) node.FromPoint);
 
-            foreach (Ast ast in node.ToChain)
-            {
-                if (ast is Statement s)
-                {
-                    Visit((dynamic) s);
-                }
-            }
+
+            foreach (Ast ast in node.ToChain) Visit((dynamic) ast);
 
             return node;
-
         }
 
         public Ast Visit(Curve node)
         {
-            if (node.FromPoint is NameReference n)
-            {
-                Visit(n);
-            }
+            Visit((dynamic) node.FromPoint);
+            foreach (Ast ast in node.ToChain) Visit((dynamic) ast);
 
-            foreach (Ast ast in node.ToChain)
-            {
-                if (ast is Statement s)
-                {
-                    Visit((dynamic) s);
-                }
-            }
-
-            Visit((dynamic)node.Angle);
+            Visit((dynamic) node.Angle);
             return node;
+        }
+
+        public Ast Visit(If node)
+        {
+            EnterScope();
+            foreach (Ast ast in node.Body)
+            {
+                dynamic q = Visit((dynamic) ast);
+            }
+
+            ExitScope();
+
+            return Visit((dynamic) node.Condition);
+        }
+
+        public Ast Visit(IfElse node)
+        {
+            EnterScope();
+            foreach (Ast ast in node.Body)
+                Visit((dynamic) ast);
+
+            ExitScope();
+            EnterScope();
+            foreach (Ast ast in node.ElseBody)
+                Visit((dynamic) ast);
+
+            ExitScope();
+
+
+            return Visit((dynamic) node.Condition);
         }
     }
 }

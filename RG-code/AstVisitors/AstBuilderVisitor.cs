@@ -264,7 +264,7 @@ namespace RG_code.AstVisitors
             {
                 falseBody.Add(Visit(statementContext));
             }
-
+            
             return new IfElse(ifCommand, falseBody, context.Start);
         }
         

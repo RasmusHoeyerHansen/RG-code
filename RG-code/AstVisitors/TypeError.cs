@@ -79,7 +79,9 @@ namespace RG_code.AstVisitors
                 case ErrorType.ExpressionInconsistency:
                     return $"An expression was inconsistent.  Got type {FirstType} and {SecondType} in " +
                            NodeInformation + OptionalText;
-                case ErrorType.BadDeclaration: return $"BadDeclaration: Expected {FirstType}, but got {SecondType} as expression, {NodeInformation}";
+                case ErrorType.BadDeclaration: 
+                    return $"BadDeclaration: Expected {FirstType}, but got {SecondType} as expression, {NodeInformation}";
+                
                 default: return "OTHER ERROR";
             }
         }

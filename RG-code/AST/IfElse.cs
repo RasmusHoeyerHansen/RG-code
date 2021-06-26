@@ -18,6 +18,7 @@ namespace RG_code.AST
         public IfElse(If ifStatement, IEnumerable<Ast> elseBody, IToken token)
             : base(ifStatement.Condition, ifStatement.Body, token)
         {
+            ElseBody = elseBody;
             foreach (Ast ast in elseBody)
             {
                 Children.Add(ast);

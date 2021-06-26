@@ -42,13 +42,13 @@ namespace RG_code.AstVisitors
             ScopeStack.Pop();
         }
 
-        protected Declaration FindDeclaration(NameReference node)
+        protected Declaration GetDeclaration(NameReference node)
         {
-            return FindDeclaration(node.Name);
+            return GetDeclaration(node.Name);
         }
         
 
-        protected Declaration FindDeclaration(string nodeName)
+        protected Declaration GetDeclaration(string nodeName)
         {
             Scope foundScope;
             ScopeStack.TryPeek(out foundScope);
@@ -69,7 +69,7 @@ namespace RG_code.AstVisitors
 
         protected bool IsDeclared(string nodeName)
         {
-            return FindDeclaration(nodeName) is null ? false : true; 
+            return GetDeclaration(nodeName) is null ? false : true; 
            }
         
         protected bool IsDeclared(Declaration node)
