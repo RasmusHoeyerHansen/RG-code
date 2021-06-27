@@ -1,0 +1,10 @@
+﻿point p1 = (1,1);
+point p2 = (3,2);
+point p3 = (3,3);
+point p4 = (4,4);
+point p5 = (5,5);
+
+line from p1 to p2;
+line from p1 to p2 to p3;
+line from p1 to p2 to p3 to p4;
+line from p1 to p2 to p3 to p4 to p5;

@@ -45,16 +45,11 @@ namespace RG_code.AstVisitors
         public ErrorType TypeOfError { get; set; }
 
         private string _nodeInfo = " ";
+
         private string NodeInformation
         {
-            get
-            {
-                return _nodeInfo;
-            }
-            set
-            {
-                _nodeInfo = value;
-            }
+            get => _nodeInfo;
+            set => _nodeInfo = value;
         }
 
         private Type FirstType { get; set; }
@@ -79,9 +74,10 @@ namespace RG_code.AstVisitors
                 case ErrorType.ExpressionInconsistency:
                     return $"An expression was inconsistent.  Got type {FirstType} and {SecondType} in " +
                            NodeInformation + OptionalText;
-                case ErrorType.BadDeclaration: 
-                    return $"BadDeclaration: Expected {FirstType}, but got {SecondType} as expression, {NodeInformation}";
-                
+                case ErrorType.BadDeclaration:
+                    return
+                        $"BadDeclaration: Expected {FirstType}, but got {SecondType} as expression, {NodeInformation}";
+
                 default: return "OTHER ERROR";
             }
         }

@@ -151,17 +151,6 @@ public partial class RGCodeBaseVisitor<Result> : AbstractParseTreeVisitor<Result
 	/// <return>The visitor result.</return>
 	public virtual Result VisitSingeAtom([NotNull] RGCodeParser.SingeAtomContext context) { return VisitChildren(context); }
 	/// <summary>
-	/// Visit a parse tree produced by the <c>parentheseis</c>
-	/// labeled alternative in <see cref="RGCodeParser.factor"/>.
-	/// <para>
-	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
-	/// on <paramref name="context"/>.
-	/// </para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	/// <return>The visitor result.</return>
-	public virtual Result VisitParentheseis([NotNull] RGCodeParser.ParentheseisContext context) { return VisitChildren(context); }
-	/// <summary>
 	/// Visit a parse tree produced by the <c>value</c>
 	/// labeled alternative in <see cref="RGCodeParser.atom"/>.
 	/// <para>
@@ -183,6 +172,17 @@ public partial class RGCodeBaseVisitor<Result> : AbstractParseTreeVisitor<Result
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
 	public virtual Result VisitIdMath([NotNull] RGCodeParser.IdMathContext context) { return VisitChildren(context); }
+	/// <summary>
+	/// Visit a parse tree produced by the <c>compund</c>
+	/// labeled alternative in <see cref="RGCodeParser.atom"/>.
+	/// <para>
+	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
+	/// on <paramref name="context"/>.
+	/// </para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	public virtual Result VisitCompund([NotNull] RGCodeParser.CompundContext context) { return VisitChildren(context); }
 	/// <summary>
 	/// Visit a parse tree produced by the <c>boolExpression</c>
 	/// labeled alternative in <see cref="RGCodeParser.bool"/>.

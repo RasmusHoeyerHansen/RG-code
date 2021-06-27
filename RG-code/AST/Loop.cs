@@ -22,14 +22,14 @@ namespace RG_code.AST
 
         public Ast Condition { get; set; }
         public IEnumerable<Ast> Body { get; }
+
         public IAst Accept(ILoopVisitor<Ast> visitor)
         {
             return visitor.Visit(this);
         }
-        
+
         public override string ToString()
         {
-            
             return "Loop " + base.ToString();
         }
     }

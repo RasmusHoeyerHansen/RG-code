@@ -1,0 +1,24 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net5.0</TargetFramework>
+        <RootNamespace>RG_testing</RootNamespace>
+
+        <IsPackable>false</IsPackable>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="NUnit" Version="3.12.0" />
+        <PackageReference Include="NUnit3TestAdapter" Version="3.16.1" />
+        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.5.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Content Include="Fixtures programs\Correct\Expressions\Basic arithmetics.txt" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\RG-code\RG-code.csproj" />
+    </ItemGroup>
+
+</Project>

@@ -14,7 +14,7 @@ namespace RG_code.AST
                 ast.Parent = this;
             }
         }
-        
+
         public IfElse(If ifStatement, IEnumerable<Ast> elseBody, IToken token)
             : base(ifStatement.Condition, ifStatement.Body, token)
         {
@@ -25,12 +25,11 @@ namespace RG_code.AST
                 ast.Parent = this;
             }
         }
-        
+
         public IEnumerable<Ast> ElseBody { get; private set; }
-        
+
         public override string ToString()
         {
-            
             return "If-else " + base.ToString();
         }
     }

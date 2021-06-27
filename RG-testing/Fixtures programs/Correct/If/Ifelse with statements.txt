@@ -1,0 +1,63 @@
+﻿number n = 0;
+point p = (0,0);
+
+iff 2 == 2 begin end if
+    else begin
+        number b = 2;
+    end else;
+    
+iff 2 == 2 begin end if
+    else begin
+        point q = 2;
+    end else;
+    
+iff 2 == 2 begin end if
+    else begin
+        n = 2;
+    end else;
+    
+iff 2 == 2 begin end if
+    else begin
+        p = (2,2);
+    end else;
+    
+iff 2 == 2 begin end if
+    else begin
+        line from (0,0) to (1,1);
+    end else;
+    
+iff 2 == 2 begin end if
+    else begin
+        curve from (0,0) to (1,1) with angle 90;
+    end else;  
+
+    
+iff 2 == 2 
+    begin 
+       
+    end if  
+  else 
+    begin
+      repeat until 3 == 3 begin
+    end loop;
+    
+iff 2 == 2 
+begin 
+       
+end if  
+  else 
+    begin
+        iff 2 == 2
+            begin end if;
+    end 
+else;  
+
+iff 2 == 2 
+    begin 
+       
+    end if
+    else begin
+        iff 2 == 2 begin end if
+        else begin
+        end else;
+end else;  

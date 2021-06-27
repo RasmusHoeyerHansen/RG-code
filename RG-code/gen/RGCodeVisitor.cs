@@ -104,13 +104,6 @@ public interface IRGCodeVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <return>The visitor result.</return>
 	Result VisitSingeAtom([NotNull] RGCodeParser.SingeAtomContext context);
 	/// <summary>
-	/// Visit a parse tree produced by the <c>parentheseis</c>
-	/// labeled alternative in <see cref="RGCodeParser.factor"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	/// <return>The visitor result.</return>
-	Result VisitParentheseis([NotNull] RGCodeParser.ParentheseisContext context);
-	/// <summary>
 	/// Visit a parse tree produced by the <c>value</c>
 	/// labeled alternative in <see cref="RGCodeParser.atom"/>.
 	/// </summary>
@@ -124,6 +117,13 @@ public interface IRGCodeVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
 	Result VisitIdMath([NotNull] RGCodeParser.IdMathContext context);
+	/// <summary>
+	/// Visit a parse tree produced by the <c>compund</c>
+	/// labeled alternative in <see cref="RGCodeParser.atom"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitCompund([NotNull] RGCodeParser.CompundContext context);
 	/// <summary>
 	/// Visit a parse tree produced by the <c>boolExpression</c>
 	/// labeled alternative in <see cref="RGCodeParser.bool"/>.

@@ -4,7 +4,7 @@ namespace RG_code.AST
 {
     public class GreaterThan : InfixBool
     {
-        public GreaterThan(Ast lhs, Ast rhs, IToken token ) : base(lhs, rhs, token)
+        public GreaterThan(Ast lhs, Ast rhs, IToken token) : base(lhs, rhs, token)
         {
         }
 
@@ -12,10 +12,9 @@ namespace RG_code.AST
         {
             return visitor.Visit(this);
         }
-        
+
         public override string ToString()
         {
-            
             return "Greater Than " + base.ToString();
         }
     }

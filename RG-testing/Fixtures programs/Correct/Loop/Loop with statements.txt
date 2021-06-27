@@ -1,0 +1,49 @@
+﻿number n = 0;
+point p = (0,0);
+
+repeat until 2<2 begin
+n = 1;
+end loop;
+
+repeat until 2<2 begin
+p = (1,1);
+end loop;
+
+repeat until 2<2 begin
+line from p to (3,3);
+end loop;
+
+repeat until 2<2 begin
+curve from p to (3,3) with angle 90;
+end loop;
+
+repeat until 2<2 begin
+curve from p to (3,3) with angle 90;
+end loop;
+
+
+repeat until 2<2 begin
+iff 2 == 2 then
+    begin
+    
+    end if;
+end loop;
+
+repeat until 2<2 begin
+    iff 2 == 2 then
+        begin
+        
+        end;
+  
+end loop;
+
+repeat until 2<2 begin
+    iff 2 == 2 then
+        begin
+        
+        end
+    else do
+        begin
+        
+        end; 
+end loop;

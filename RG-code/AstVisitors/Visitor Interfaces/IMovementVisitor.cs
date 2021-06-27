@@ -2,6 +2,5 @@
 {
     public interface IMovementVisitor<out T> : ILineVisitor<T>, ICurveVisitor<T>
     {
-
     }
 }

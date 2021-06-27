@@ -15,20 +15,17 @@ namespace RG_code.AstVisitors
         public override Ast VisitProgram(RGCodeParser.ProgramContext context)
         {
             RGCodeParser.StatementContext[] q = context.statement();
-            List<Ast> programBody = new List<Ast>();
-            foreach (RGCodeParser.StatementContext statementContext in q)
-            {
-                programBody.Add(Visit(statementContext));
-            }
+            List<Ast> programBody = new();
+            foreach (RGCodeParser.StatementContext statementContext in q) programBody.Add(Visit(statementContext));
 
             return new Program(programBody, context.Start);
-
         }
+
 
         public override Ast VisitAssignment(RGCodeParser.AssignmentContext context)
         {
             Ast expr = Visit(context.expr());
-            Assign result = new Assign(context.ID().GetText(), expr, context.Start);
+            Assign result = new(context.ID().GetText(), expr, context.Start);
 
             return result;
         }
@@ -36,7 +33,7 @@ namespace RG_code.AstVisitors
         public override Ast VisitVardec(RGCodeParser.VardecContext context)
         {
             Ast assignment = Visit(context.assignment());
-            Declaration result = new Declaration(assignment, context.Start);
+            Declaration result = new(assignment, context.Start);
 
 
             switch (context.typeWord.Text)
@@ -54,26 +51,22 @@ namespace RG_code.AstVisitors
 
         public override Ast VisitMove(RGCodeParser.MoveContext context)
         {
-            if (context.curve() != null)
-            {
-                return Visit(context.curve());
-            }
+            if (context.curve() != null) return Visit(context.curve());
 
             return Visit(context.line());
         }
 
+
         public override Ast VisitLineCommand(RGCodeParser.LineCommandContext context)
         {
             Ast from = Visit(context.@from);
-            List<Ast> toChain = new List<Ast>();
-            Line result = new Line(from, toChain, context.Start);
+            List<Ast> toChain = new();
+            Line result = new(from, toChain, context.Start);
 
 
             Ast temp;
             foreach (RGCodeParser.ToCommandsContext toCommandsContext in context.toCommands())
-            {
                 toChain.Add(Visit(toCommandsContext));
-            }
 
             return result;
         }
@@ -81,16 +74,14 @@ namespace RG_code.AstVisitors
         public override Ast VisitCurveCommand(RGCodeParser.CurveCommandContext context)
         {
             Ast from = Visit(context.@from);
-            List<Ast> toChain = new List<Ast>();
+            List<Ast> toChain = new();
             Ast angle = Visit(context.angle);
 
             foreach (RGCodeParser.ToCommandsContext toCommandsContext in context.toCommands())
-            {
                 toChain.Add(Visit(toCommandsContext));
-            }
 
-            Curve result = new Curve(from, toChain, angle, context.Start);
-            return base.VisitCurveCommand(context);
+            Curve result = new(from, toChain, angle, context.Start);
+            return result;
         }
 
         public override Ast VisitTo(RGCodeParser.ToContext context)
@@ -110,14 +101,11 @@ namespace RG_code.AstVisitors
         public override Ast VisitBoolExpression(RGCodeParser.BoolExpressionContext context)
         {
             Ast lhs = Visit(context.lhs);
-            var rhs = Visit(context.lhs);
-
+            Ast rhs = Visit(context.lhs);
             switch (context.@operator.Text)
             {
                 case ">":
-
                     return new GreaterThan(lhs, rhs, context.Start);
-
                 case "<":
                     return new LessThan(lhs, rhs, context.Start);
                 case "==":
@@ -141,13 +129,11 @@ namespace RG_code.AstVisitors
 
                 default:
                     throw new NotSupportedException(context.op.Text + " is not supported");
-
             }
         }
 
         public override Ast VisitMultiplication(RGCodeParser.MultiplicationContext context)
         {
-
             Ast lhs = Visit(context.lhs);
             Ast rhs = Visit(context.rhs);
 
@@ -160,7 +146,6 @@ namespace RG_code.AstVisitors
 
                 default:
                     throw new NotSupportedException(context.op.Text + " is not supported");
-
             }
         }
 
@@ -176,8 +161,8 @@ namespace RG_code.AstVisitors
 
         public override Ast VisitPower(RGCodeParser.PowerContext context)
         {
-            var expr = Visit(context.atom());
-            var factor = Visit(context.factor());
+            Ast expr = Visit(context.atom());
+            Ast factor = Visit(context.factor());
             return new Power(expr, factor, context.Start);
         }
 
@@ -190,23 +175,22 @@ namespace RG_code.AstVisitors
         {
             string stringVal = context.value.Text;
             double q = double.Parse(stringVal);
-                return new Number(q, context.Start);
+            return new Number(q, context.Start);
         }
 
         public override Ast VisitIf(RGCodeParser.IfContext context)
         {
             Ast condition = Visit(context.cond);
-            List<Ast> body = new List<Ast>();
+            List<Ast> body = new();
 
             RGCodeParser.StatementContext[] statements = context.statement();
-            foreach (var statementContext in statements)
+            foreach (RGCodeParser.StatementContext statementContext in statements)
             {
-                var q = Visit(statementContext);
+                Ast q = Visit(statementContext);
                 body.Add(q);
             }
 
             return new If(condition, body, context.Start);
-
         }
 
         public override Ast VisitStatement(RGCodeParser.StatementContext context)
@@ -214,14 +198,14 @@ namespace RG_code.AstVisitors
             if (context.assignment() != null)
             {
                 return VisitAssignment(context.assignment());
-            } 
+            }
             else if (context.@if() != null)
             {
                 return VisitIf(context.@if());
-            } 
+            }
             else if (context.repeat() != null)
             {
-                var q = VisitRepeat(context.repeat());
+                Ast q = VisitRepeat(context.repeat());
                 return q;
             }
             else if (context.vardec() != null)
@@ -231,7 +215,7 @@ namespace RG_code.AstVisitors
             else if (context.ifElse() != null)
             {
                 return VisitIfElse(context.ifElse());
-            } 
+            }
             else if (context.move() != null)
             {
                 return VisitMove(context.move());
@@ -239,36 +223,33 @@ namespace RG_code.AstVisitors
 
             return null;
         }
-        
-        
+
+        public override Ast VisitCompund(RGCodeParser.CompundContext context)
+        {
+            return Visit(context.math());
+        }
+
 
         public override Ast VisitRepeat(RGCodeParser.RepeatContext context)
         {
             Ast condition = Visit(context.cond);
-            List<Ast> body = new List<Ast>();
-            foreach (var statement in context.statement())
-            {
-                body.Add(Visit(statement));
-            }
+            List<Ast> body = new();
+            foreach (RGCodeParser.StatementContext statement in context.statement()) body.Add(Visit(statement));
 
             return new Loop(condition, body, context.Start);
         }
 
         public override Ast VisitIfElse(RGCodeParser.IfElseContext context)
         {
-
             If ifCommand = (If) Visit(context.@if());
-            List<Ast> falseBody = new List<Ast>();
+            List<Ast> falseBody = new();
 
             foreach (RGCodeParser.StatementContext statementContext in context.statement())
-            {
                 falseBody.Add(Visit(statementContext));
-            }
-            
+
             return new IfElse(ifCommand, falseBody, context.Start);
         }
-        
-        
+
 
         public override Ast VisitIdMath(RGCodeParser.IdMathContext context)
         {
@@ -280,6 +261,4 @@ namespace RG_code.AstVisitors
             return new NameReference(context.value.Text, context.Start);
         }
     }
-    
-    
 }

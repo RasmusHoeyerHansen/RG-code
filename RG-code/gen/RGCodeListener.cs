@@ -153,18 +153,6 @@ public interface IRGCodeListener : IParseTreeListener {
 	/// <param name="context">The parse tree.</param>
 	void ExitSingeAtom([NotNull] RGCodeParser.SingeAtomContext context);
 	/// <summary>
-	/// Enter a parse tree produced by the <c>parentheseis</c>
-	/// labeled alternative in <see cref="RGCodeParser.factor"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void EnterParentheseis([NotNull] RGCodeParser.ParentheseisContext context);
-	/// <summary>
-	/// Exit a parse tree produced by the <c>parentheseis</c>
-	/// labeled alternative in <see cref="RGCodeParser.factor"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void ExitParentheseis([NotNull] RGCodeParser.ParentheseisContext context);
-	/// <summary>
 	/// Enter a parse tree produced by the <c>value</c>
 	/// labeled alternative in <see cref="RGCodeParser.atom"/>.
 	/// </summary>
@@ -188,6 +176,18 @@ public interface IRGCodeListener : IParseTreeListener {
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	void ExitIdMath([NotNull] RGCodeParser.IdMathContext context);
+	/// <summary>
+	/// Enter a parse tree produced by the <c>compund</c>
+	/// labeled alternative in <see cref="RGCodeParser.atom"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterCompund([NotNull] RGCodeParser.CompundContext context);
+	/// <summary>
+	/// Exit a parse tree produced by the <c>compund</c>
+	/// labeled alternative in <see cref="RGCodeParser.atom"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitCompund([NotNull] RGCodeParser.CompundContext context);
 	/// <summary>
 	/// Enter a parse tree produced by the <c>boolExpression</c>
 	/// labeled alternative in <see cref="RGCodeParser.bool"/>.

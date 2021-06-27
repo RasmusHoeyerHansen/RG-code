@@ -1,6 +1,6 @@
 grammar RGCode;
 program: statement+ EOF;
-statement: (assignment | vardec | move  | repeat |if 'if'|ifElse 'else') ';';
+statement: (assignment | vardec | move  | repeat |if|ifElse) ';';
 vardec: typeWord=Typeword assignment ;
 assignment: ID '=' expr ;
 
@@ -16,13 +16,14 @@ term            : lhs=factor op=('*'|'/') rhs=term #multiplication
                 ;      
 factor          : atom pow='^' factor              #power
                 | atom                             #singeAtom
-                |'(' mathExpr=math ')'             #parentheseis
                 ;
 
 atom            : value=Number                     #value
-               | value=ID                     #idMath;
+               | value=ID                     #idMath
+               | '('math')'                     #compund;
 
 bool: lhs=math operator=BoolOperator rhs=math #boolExpression;
+
 point: '(' lhs=math ',' rhs=math')'   #pointExpression
      | value=ID #idPoint;
 
@@ -38,9 +39,9 @@ repeat: 'repeat' 'until' cond=bool ScopeStart statement* ScopeEnd 'loop';
  
 
 
-if: 'iff' cond=bool 'then' ScopeStart statement* ScopeEnd;
+if: 'iff' cond=bool ScopeStart statement* ScopeEnd 'if';
 
-ifElse: if 'else do' ScopeStart statement* ScopeEnd;
+ifElse: if 'else'  ScopeStart statement* ScopeEnd 'else';
 
  
  

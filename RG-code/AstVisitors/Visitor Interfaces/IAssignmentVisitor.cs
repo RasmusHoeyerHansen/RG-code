@@ -3,6 +3,5 @@
     public interface IAssignmentVisitor<out T>
     {
         public T Visit(Assign node);
-
     }
 }

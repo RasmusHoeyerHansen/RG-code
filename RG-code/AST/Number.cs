@@ -15,10 +15,9 @@ namespace RG_code.AST
         {
             return visitor.Visit(this);
         }
-        
+
         public override string ToString()
         {
-            
             return "Number " + base.ToString();
         }
     }

@@ -9,25 +9,24 @@ namespace RG_code.AstVisitors
         {
             ScopeStack.Push(new Scope(null));
         }
+
         public StackTraveller(Stack<Scope> stack)
         {
             ScopeStack = stack;
         }
-        public Stack<Scope> ScopeStack { get; set; } = new Stack<Scope>();
-        protected List<TypeError> Errors { get; set; } = new List<TypeError>();
 
-        public string GetErrorText()
+        public Stack<Scope> ScopeStack { get; set; } = new();
+        public List<TypeError> Errors { get; private set; } = new();
+
+        public virtual string GetErrorText()
         {
             string result = string.Empty;
 
             if (Errors.Count == 0)
-                return result;
-                    
+                return "No type error";
+
             result += "Type Errors: \n";
-            foreach (TypeError typeErrors in Errors)
-            {
-                result += typeErrors.ToString() + '\n';
-            }
+            foreach (TypeError typeErrors in Errors) result += typeErrors.ToString() + '\n';
             return result;
         }
 
@@ -36,7 +35,7 @@ namespace RG_code.AstVisitors
             ScopeStack.Push(new Scope(ScopeStack.Peek()));
         }
 
-        
+
         protected void ExitScope()
         {
             ScopeStack.Pop();
@@ -46,7 +45,7 @@ namespace RG_code.AstVisitors
         {
             return GetDeclaration(node.Name);
         }
-        
+
 
         protected Declaration GetDeclaration(string nodeName)
         {
@@ -56,10 +55,7 @@ namespace RG_code.AstVisitors
 
             while (foundScope != null)
             {
-                if (foundScope.ContainedVariables.TryGetValue(nodeName, out foundDeclaration))
-                {
-                    return foundDeclaration;
-                }
+                if (foundScope.ContainedVariables.TryGetValue(nodeName, out foundDeclaration)) return foundDeclaration;
 
                 foundScope = foundScope.ParentScope;
             }
@@ -69,14 +65,12 @@ namespace RG_code.AstVisitors
 
         protected bool IsDeclared(string nodeName)
         {
-            return GetDeclaration(nodeName) is null ? false : true; 
-           }
-        
+            return GetDeclaration(nodeName) is null ? false : true;
+        }
+
         protected bool IsDeclared(Declaration node)
         {
             return IsDeclared(node.Name);
         }
-
- 
     }
 }

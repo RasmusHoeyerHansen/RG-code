@@ -1,0 +1,30 @@
+﻿number n = 2;
+number q = 3;
+
+[TestCase("iff 3 < 3 begin end if else begin end else;")]
+
+[TestCase("iff 3 > 3 begin end if else begin end else;")]
+
+[TestCase("iff 3 == 3 begin end if else begin end else;")]
+
+[TestCase("iff 3 < 3+3 begin end if else begin end else;")]
+
+[TestCase("iff 3 > 3*3 begin end if else begin end else;")]
+
+[TestCase("iff 3 == 3/3 begin end if else begin end else;")]
+
+[TestCase("iff 3 == 3^3 begin end if else begin end else;")]
+
+ 
+
+[TestCase("iff n < 3 begin end if else begin end else;")]
+
+[TestCase("iff n > 3 begin end if else begin end else;")]
+
+[TestCase("iff n == 3 begin end if else begin end else;")]
+
+[TestCase("iff n < q begin end if else begin end else;")]
+
+[TestCase("iff n > q begin end if else begin end else;")]
+
+[TestCase("iff n == q begin end if else begin end else;")]

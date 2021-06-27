@@ -17,24 +17,24 @@ namespace RG_code.AstVisitors
 
         public Ast Visit(GreaterThan node)
         {
-            Visit((dynamic)node.LeftHandSide);
-            Visit((dynamic)node.RightHandSide);
+            Visit((dynamic) node.LeftHandSide);
+            Visit((dynamic) node.RightHandSide);
             node.Type = Type.Bool;
             return node;
         }
 
         public Ast Visit(LessThan node)
         {
-            Visit((dynamic)node.LeftHandSide);
-            Visit((dynamic)node.RightHandSide);
+            Visit((dynamic) node.LeftHandSide);
+            Visit((dynamic) node.RightHandSide);
             node.Type = Type.Bool;
             return node;
         }
 
         public Ast Visit(Equals node)
         {
-            Visit((dynamic)node.LeftHandSide);
-            Visit((dynamic)node.RightHandSide);
+            Visit((dynamic) node.LeftHandSide);
+            Visit((dynamic) node.RightHandSide);
             node.Type = Type.Number;
             return node;
         }
@@ -60,7 +60,7 @@ namespace RG_code.AstVisitors
 
         public Ast Visit(NameReference node)
         {
-            if (!IsDeclared(node.Name)) 
+            if (!IsDeclared(node.Name))
                 Errors.Add(new TypeError(node, TypeError.ErrorType.NotDeclared));
 
             return node;
@@ -76,31 +76,31 @@ namespace RG_code.AstVisitors
             else
                 ScopeStack.Peek().ContainedVariables.Add(node.Name, node);
 
-            
+
             return null;
         }
 
 
         public Ast Visit(Plus node)
         {
-            Visit((dynamic)node.LeftHandSide);
-            Visit((dynamic)node.RightHandSide);
+            Visit((dynamic) node.LeftHandSide);
+            Visit((dynamic) node.RightHandSide);
             node.Type = Type.Number;
             return node;
         }
 
         public Ast Visit(Minus node)
         {
-            Visit((dynamic)node.LeftHandSide);
-            Visit((dynamic)node.RightHandSide);
+            Visit((dynamic) node.LeftHandSide);
+            Visit((dynamic) node.RightHandSide);
             node.Type = Type.Number;
             return node;
         }
 
         public Ast Visit(Multiplication node)
         {
-            Visit((dynamic)node.LeftHandSide);
-            Visit((dynamic)node.RightHandSide);
+            Visit((dynamic) node.LeftHandSide);
+            Visit((dynamic) node.RightHandSide);
             node.Type = Type.Number;
 
             return node;
@@ -108,8 +108,8 @@ namespace RG_code.AstVisitors
 
         public Ast Visit(Divide node)
         {
-            Visit((dynamic)node.LeftHandSide);
-            Visit((dynamic)node.RightHandSide);
+            Visit((dynamic) node.LeftHandSide);
+            Visit((dynamic) node.RightHandSide);
             node.Type = Type.Number;
 
             return node;
@@ -117,8 +117,8 @@ namespace RG_code.AstVisitors
 
         public Ast Visit(Power node)
         {
-            Visit((dynamic)node.LeftHandSide);
-            Visit((dynamic)node.RightHandSide);
+            Visit((dynamic) node.LeftHandSide);
+            Visit((dynamic) node.RightHandSide);
             node.Type = Type.Number;
             return node;
         }
@@ -131,8 +131,8 @@ namespace RG_code.AstVisitors
 
         public Ast Visit(Point node)
         {
-            Visit((dynamic)node.XValue);
-            Visit((dynamic)node.YValue);
+            Visit((dynamic) node.XValue);
+            Visit((dynamic) node.YValue);
             node.Type = Type.Point;
             return node;
         }

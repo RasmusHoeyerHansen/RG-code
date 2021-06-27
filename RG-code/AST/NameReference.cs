@@ -4,7 +4,8 @@ namespace RG_code.AST
 {
     public class NameReference : Expression, IIdVisitable<Ast>
     {
-        public string Name {get; private set; }
+        public string Name { get; private set; }
+
         public NameReference(string Id, IToken information) : base(information)
         {
             Name = Id;
@@ -15,9 +16,9 @@ namespace RG_code.AST
         {
             return visitor.Visit(this);
         }
+
         public override string ToString()
         {
-            
             return "Id " + base.ToString();
         }
     }

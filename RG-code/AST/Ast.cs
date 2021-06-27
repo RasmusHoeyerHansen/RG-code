@@ -7,14 +7,14 @@ namespace RG_code.AST
     public class Ast : IAst
     {
         public Type Type { get; set; } = Type.NotDeclared;
-        public Ast(IAst parent, IToken token):this(token)
+
+        public Ast(IAst parent, IToken token) : this(token)
         {
             Parent = parent;
         }
-        
-        public Ast (IToken token)
+
+        public Ast(IToken token)
         {
-            
             Information = token;
             Children = new List<IAst>();
         }

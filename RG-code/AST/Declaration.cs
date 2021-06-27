@@ -15,14 +15,14 @@ namespace RG_code.AST
         }
 
         public Assign AssignedValue { get; set; }
+
         public Ast Accept(IDeclarationVisitor<Ast> visitor)
         {
             return visitor.Visit(this);
         }
-        
+
         public override string ToString()
         {
-            
             return $"{Name} " + base.ToString();
         }
     }

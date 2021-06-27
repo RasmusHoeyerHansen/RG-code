@@ -2,6 +2,5 @@
 {
     public interface IBoolVisitor<out T> : IInfixBoolVisitor<T>
     {
-
     }
 }

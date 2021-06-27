@@ -1,15 +1,17 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel;
 using Antlr4.Runtime;
 
 namespace RG_code.AST
 {
     public class Line : Statement, ILineVisitable<Ast>
     {
-        public Line(Ast from, IEnumerable<Ast> toChain, IToken information) : base (information)
+        public Line(Ast from, IEnumerable<Ast> toChain, IToken information) : base(information)
         {
             FromPoint = from;
             from.Parent = this;
             Children.Add(from);
+            ToChain = toChain;
             foreach (Point point in toChain)
             {
                 point.Parent = this;
@@ -19,14 +21,14 @@ namespace RG_code.AST
 
         public Ast FromPoint { get; set; }
         public IEnumerable<Ast> ToChain { get; set; }
+
         public Ast Accept(ILineVisitor<Ast> visitor)
         {
             return visitor.Visit(this);
         }
-        
+
         public override string ToString()
         {
-            
             return "Line " + base.ToString();
         }
     }

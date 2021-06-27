@@ -180,20 +180,6 @@ public partial class RGCodeBaseListener : IRGCodeListener {
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitSingeAtom([NotNull] RGCodeParser.SingeAtomContext context) { }
 	/// <summary>
-	/// Enter a parse tree produced by the <c>parentheseis</c>
-	/// labeled alternative in <see cref="RGCodeParser.factor"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void EnterParentheseis([NotNull] RGCodeParser.ParentheseisContext context) { }
-	/// <summary>
-	/// Exit a parse tree produced by the <c>parentheseis</c>
-	/// labeled alternative in <see cref="RGCodeParser.factor"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void ExitParentheseis([NotNull] RGCodeParser.ParentheseisContext context) { }
-	/// <summary>
 	/// Enter a parse tree produced by the <c>value</c>
 	/// labeled alternative in <see cref="RGCodeParser.atom"/>.
 	/// <para>The default implementation does nothing.</para>
@@ -221,6 +207,20 @@ public partial class RGCodeBaseListener : IRGCodeListener {
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitIdMath([NotNull] RGCodeParser.IdMathContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by the <c>compund</c>
+	/// labeled alternative in <see cref="RGCodeParser.atom"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterCompund([NotNull] RGCodeParser.CompundContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by the <c>compund</c>
+	/// labeled alternative in <see cref="RGCodeParser.atom"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitCompund([NotNull] RGCodeParser.CompundContext context) { }
 	/// <summary>
 	/// Enter a parse tree produced by the <c>boolExpression</c>
 	/// labeled alternative in <see cref="RGCodeParser.bool"/>.

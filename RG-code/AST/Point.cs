@@ -11,23 +11,20 @@ namespace RG_code.AST
             Children.Add(XValue);
             Children.Add(YValue);
 
-            foreach (IAst child in Children)
-            {
-                child.Parent = this;
-            }
+            foreach (IAst child in Children) child.Parent = this;
         }
 
         public Ast XValue { get; }
 
         public Ast YValue { get; }
+
         public Ast Accept(IPointVisitor<Ast> visitor)
         {
             return visitor.Visit(this);
         }
-        
+
         public override string ToString()
         {
-            
             return "Point " + base.ToString();
         }
     }

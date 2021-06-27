@@ -17,6 +17,7 @@ namespace RG_code.AST
 
         public Type Type { get; set; }
         public Ast Value { get; set; }
+
         public Ast Accept(IAssignmentVisitor<Ast> visitor)
         {
             return visitor.Visit(this);
@@ -24,7 +25,6 @@ namespace RG_code.AST
 
         public override string ToString()
         {
-            
             return "Assign " + base.ToString();
         }
     }

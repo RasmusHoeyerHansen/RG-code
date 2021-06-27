@@ -6,6 +6,7 @@
         Number,
         Bool,
         Point,
-        Ok, Wrong
+        Ok,
+        Wrong
     }
 }
