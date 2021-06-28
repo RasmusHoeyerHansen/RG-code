@@ -6,15 +6,20 @@ namespace RG_code.AST
     {
         public string Name { get;  }
 
-        public Declaration(Ast assignedValue, IToken information) : base(information)
+        public Declaration(Expression assignedValue, string name, IToken information) : base(information)
         {
-            Assignment = (Assign) assignedValue;
-            Assignment.Parent = this;
+            Value = assignedValue;
+            assignedValue.Parent = this;
             Children.Add(assignedValue);
-            Name = Assignment.Id;
+            Name = name;
         }
 
-        public Assign Assignment { get; }
+        public Declaration(Assign ass,  IToken info):this(ass.Value, ass.Id, info)
+        {
+            
+        }
+        public Expression Value { get; }
+
         public override string ToString()
         {
             return $"{Name} " + base.ToString();

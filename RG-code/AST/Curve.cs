@@ -3,7 +3,7 @@ using Antlr4.Runtime;
 
 namespace RG_code.AST
 {
-    public class Curve : Statement
+    public class Curve : Movement
     {
         public Curve(Ast fromPoint, IEnumerable<Ast> toChain, Ast angle, IToken information) : base(information)
         {

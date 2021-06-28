@@ -4,15 +4,6 @@ namespace RG_code.AST
 {
     public abstract class InfixBool : Infix
     {
-        public InfixBool(Ast lhs, Ast rhs, IToken token, IAst parent) : base(parent, token)
-        {
-            LeftHandSide = lhs;
-            RightHandSide = rhs;
-            Children.Add(lhs);
-            Children.Add(rhs);
-
-            foreach (IAst child in Children) child.Parent = this;
-        }
 
         public InfixBool(Ast lhs, Ast rhs, IToken token) : base(token)
         {

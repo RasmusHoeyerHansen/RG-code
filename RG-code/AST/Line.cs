@@ -4,7 +4,7 @@ using Antlr4.Runtime;
 
 namespace RG_code.AST
 {
-    public class Line : Statement
+    public class Line : Movement
     {
         public Line(Ast from, IEnumerable<Ast> toChain, IToken information) : base(information)
         {
@@ -25,6 +25,13 @@ namespace RG_code.AST
         public override string ToString()
         {
             return "Line " + base.ToString();
+        }
+    }
+
+    public class Movement : Statement
+    {
+        public Movement(IToken token) : base(token)
+        {
         }
     }
 }

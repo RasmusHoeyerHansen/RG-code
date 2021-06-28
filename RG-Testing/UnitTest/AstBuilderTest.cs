@@ -1,14 +1,11 @@
-using System;
 using System.Linq;
 using Antlr4.Runtime;
-using Microsoft.Win32.SafeHandles;
 using NUnit.Framework;
 using RG_code.AST;
 using RG_code.AstVisitors;
 using RG_testing.HelperClasses;
-using Type = System.Type;
 
-namespace RG_testing
+namespace RG_testing.UnitTest
 {
     [TestFixture]
     public partial class AstBuilderTest : ContextDependable

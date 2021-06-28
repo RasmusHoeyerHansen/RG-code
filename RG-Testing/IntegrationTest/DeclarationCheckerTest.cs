@@ -27,7 +27,7 @@ namespace RG_testing
         [TestCase("number b = 2; number b = 2;")]
         public void Error_ReportsDoubleDeclarations(string declarationText)
         {
-            Ast ast = CreateAst<Declaration, RGCodeParser.ProgramContext>(declarationText);
+            Ast ast = CreateAst<Program, RGCodeParser.ProgramContext>(declarationText);
             _declarationChecker.Visit((dynamic)ast);
             Assert.IsTrue(_declarationChecker.Errors.Count() != 0);
         }
@@ -40,7 +40,7 @@ namespace RG_testing
         [TestCase("point b = (2,2); number b = 2;number b = 2;number b = 2;number b = 2;",4)]
         public void Error_ReportsNumberOfExpectedDoubleDeclarationErrors(string declarationText, int expectedErrors)
         {
-            var ast = CreateAst<Declaration, RGCodeParser.ProgramContext>(declarationText);
+            var ast = CreateAst<Program, RGCodeParser.ProgramContext>(declarationText);
             _declarationChecker.Visit((dynamic)ast);
 
             bool allAreDoubleDeclError = _declarationChecker.Errors.All(err =>
@@ -57,7 +57,7 @@ namespace RG_testing
         [TestCase("number b = 2; point b = (2,0);")]
         public void Error_ReportsSameNameDeclarations(string declarationText)
         {
-            var ast = CreateAst<Declaration, RGCodeParser.ProgramContext>(declarationText);
+            Program ast = CreateAst<Program, RGCodeParser.ProgramContext>(declarationText);
             _declarationChecker.Visit((dynamic)ast);
             Assert.IsTrue(_declarationChecker.Errors.Count() != 0);
             
@@ -72,7 +72,7 @@ namespace RG_testing
         [TestCase("number b = 2; point b = (2,0);")]
         public void Error_ReportsExpectedNumberOfSameNameDeclarations(string declarationText)
         {
-            var ast = CreateAst<Declaration, RGCodeParser.ProgramContext>(declarationText);
+            Program ast = CreateAst<Program, RGCodeParser.ProgramContext>(declarationText);
             _declarationChecker.Visit((dynamic)ast);
             Assert.IsTrue(_declarationChecker.Errors.Count() != 0);
             bool allAreDoubleDeclError = _declarationChecker.Errors.All(err =>
@@ -103,7 +103,7 @@ namespace RG_testing
         public void Error_ReportsNotDeclaredOnUsageInExpression(string declarationText, int expectedErrors)
         {
             //Arrange
-            var ast = CreateAst<Declaration, RGCodeParser.ProgramContext>(declarationText);
+            var ast = CreateAst<Program, RGCodeParser.ProgramContext>(declarationText);
             //Act
             _declarationChecker.Visit((dynamic)ast);
             
@@ -152,9 +152,9 @@ namespace RG_testing
         [TestCase("line from p1 to p2 to p3 to p4 to p5;", 5)]
         public void Line_ReportsTypeErrors(string code, int amountOfErrors)
         {
-            var ast = CreateAst<Declaration, RGCodeParser.LineContext>(code);
+            Line ast = CreateAst<Line, RGCodeParser.LineContext>(code);
             //Act
-            _declarationChecker.Visit((dynamic) ast);
+            _declarationChecker.Visit(ast);
             
             var allErrorCorrect = _declarationChecker.Errors.All(err =>
             {
@@ -176,7 +176,7 @@ namespace RG_testing
         [TestCase("curve from p1 to p2 to p3 to p4 to p5 with angle b;", 6)]
         public void Curve_GivesCurveNodeWithChainLength(string code, int amountOfErrors)
         {
-            var ast = CreateAst<Declaration, RGCodeParser.CurveContext>(code);
+            Curve ast = CreateAst<Curve, RGCodeParser.CurveContext>(code);
             //Act
             _declarationChecker.Visit((dynamic) ast);
             

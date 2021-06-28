@@ -69,7 +69,7 @@ namespace RG_code.AstVisitors
         public Ast Visit(Declaration node)
         {
             //Visit values
-            Visit(node.Assignment);
+            Visit((dynamic)node.Value);
             //If already declared, add error, else add the declaration
             if (IsDeclared(node))
                 Errors.Add(new TypeError(node, TypeError.ErrorType.DoubleDeclared));

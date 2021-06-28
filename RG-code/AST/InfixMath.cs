@@ -14,16 +14,6 @@ namespace RG_code.AST
             foreach (IAst child in Children) child.Parent = this;
         }
 
-        public InfixMath(Ast lhs, Ast rhs, IToken token, IAst parent) : base(parent, token)
-        {
-            LeftHandSide = lhs;
-            RightHandSide = rhs;
-            Children.Add(lhs);
-            Children.Add(rhs);
-
-            foreach (IAst child in Children) child.Parent = this;
-        }
-
         public Ast LeftHandSide { get;}
         public Ast RightHandSide { get;}
     }

@@ -7,12 +7,8 @@ using RG_testing.HelperClasses;
 namespace RG_testing
 {
     [TestFixture]
-    public class ExpressionUsageCheckerTest : DeclarationDependable
+    public class ExpressionUsageCheckerTest : ScopeDependable
     {
-        
-
-        
-        
         [TestCase("number b = 2<3;",1)]
         [TestCase("number b = 2>3;",1)]
         [TestCase("number b = 2==3;",1)]
@@ -46,7 +42,7 @@ namespace RG_testing
             Declaration ast = CreateAst<Declaration, RGCodeParser.VardecContext>(declarationText);
             ExpressionUsageChecker checker = new ExpressionUsageChecker(Scopes);
             checker.Visit(ast);
-            Assert.IsTrue(ast.Assignment.Value.Type == Type.Bool);
+            Assert.IsTrue(ast.Value.Type == Type.Bool);
         }
         
         [TestCase("number b = 3;")]
@@ -60,7 +56,7 @@ namespace RG_testing
             Declaration ast = CreateAst<Declaration, RGCodeParser.VardecContext>(declarationText);
             ExpressionUsageChecker checker = new ExpressionUsageChecker(Scopes);
             checker.Visit(ast);
-            Assert.IsTrue(ast.Assignment.Value.Type == Type.Number);
+            Assert.IsTrue(ast.Value.Type == Type.Number);
         }
 
         
@@ -77,7 +73,7 @@ namespace RG_testing
             Declaration ast = CreateAst<Declaration, RGCodeParser.VardecContext>(declarationText);
             ExpressionUsageChecker checker = new ExpressionUsageChecker(Scopes);
             checker.Visit(ast);
-            Assert.IsTrue(ast.Assignment.Value.Type == Type.Point);
+            Assert.IsTrue(ast.Value.Type == Type.Point);
         }
         
         [TestCase("number b = (3,3);")]
@@ -91,7 +87,7 @@ namespace RG_testing
             Declaration ast = CreateAst<Declaration, RGCodeParser.VardecContext>(declarationText);
             ExpressionUsageChecker checker = new ExpressionUsageChecker(Scopes);
             checker.Visit(ast);
-            Assert.IsTrue(ast.Assignment.Value.Type == Type.Point);
+            Assert.IsTrue(ast.Value.Type == Type.Point);
         }
 
         
@@ -242,11 +238,25 @@ namespace RG_testing
             {
                 Assert.IsTrue(astProgramStatement.Type != Type.Wrong);
             }
-            
-            
-            
         }
+        
+        [TestCase("repeat until 2<2 begin number b = 2+2; number a = b; end loop;")]
+        [TestCase("number a = 2; repeat until 2<2 begin a = 2; number c = a; end loop; a = 2;")]
+        [TestCase("number a = 2; iff b<2 begin number b = a; end if else begin number b = a; end else; number c = a;")]
 
+        public void Loop_OkayBodyGivesOkay(string code)
+        {
+            Program ast = CreateAst<Program, RGCodeParser.ProgramContext>(code);
+
+            //Act
+            ExpressionUsageChecker checker = new ExpressionUsageChecker(Scopes);
+            checker.Visit(ast);
+
+            Assert.AreEqual(0, checker.Errors.Count());
+            Assert.IsTrue(ast.Type == Type.Ok);
+            
+            Assert.IsTrue(ast.ProgramStatements.All(node => node.Type != Type.Wrong));
+        }
 
         /*
          *         [TestCase("point b = 2",1)]

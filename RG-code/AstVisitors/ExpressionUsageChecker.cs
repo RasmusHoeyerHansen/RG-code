@@ -96,9 +96,13 @@ namespace RG_code.AstVisitors
             foreach (Ast ast in node.ToChain)
             {
                 Visit((dynamic) ast);
-                if (ast.Type == Type.Point) continue;
-                Errors.Add(
-                    new TypeError(ast, TypeError.ErrorType.IncorrectUsage, "point in to chain is wrongly typed."));
+                
+                if (ast.Type == Type.Point) 
+                    continue;
+                
+                Errors.Add(new TypeError(ast, TypeError.ErrorType.IncorrectUsage, 
+                    "point in to chain is wrongly typed."));
+                
                 containsWrongType = true;
             }
 
@@ -109,11 +113,10 @@ namespace RG_code.AstVisitors
 
         public Type Visit(Assign node)
         {
-            Type declaredType;
-            declaredType = GetDeclaration(node.Id).Type;
-                Visit((dynamic) node.Value);
+            Type declaredType = GetDeclaration(node.Id).Type;
+            Visit((dynamic) node.Value);
 
-                if (node.Type != declaredType)
+            if (node.Type != declaredType)
             {
                 Errors.Add(new TypeError(node, TypeError.ErrorType.IncorrectUsage,
                     $"declared type is {declaredType} but got {node.Type} as assigned value"));
@@ -142,9 +145,8 @@ namespace RG_code.AstVisitors
 
         public Type Visit(Declaration node)
         {
-            Visit((dynamic)node.Assignment.Value);
-
-            if (node.Assignment.Value.Type != node.Type) return SetAndReturn(node, Type.Wrong);
+            Visit((dynamic)node.Value);
+            if (node.Value.Type != node.Type) return SetAndReturn(node, Type.Wrong);
 
             //Nodes are already typed when created
             return node.Type;
@@ -168,16 +170,11 @@ namespace RG_code.AstVisitors
         public Type Visit(Loop node)
         {
             dynamic conditionType = Visit((dynamic) node.Condition);
-            if (conditionType != Type.Bool)
-            {
-                Errors.Add(new TypeError(node.Condition, TypeError.ErrorType.IncorrectUsage,
-                    "condition is wrongly typed."));
-            }
-
+            
             foreach (Ast ast in node.Body) 
                 Visit((dynamic) ast);
 
-            bool allOkay = node.Body.All(statement => { return statement.Type == Type.Ok ? true : false; });
+            bool allOkay = node.Body.All(statement => { return statement.Type != Type.Wrong;});
             
             return allOkay ? Type.Ok : Type.Wrong;
         }
@@ -224,13 +221,7 @@ namespace RG_code.AstVisitors
             //Notice that all nodes must be statement - else caught by parser.
             bool allOkay = node.ProgramStatements.All(statement =>
             {
-                if (statement.Type == Type.Wrong)
-                {
-                    return false;
-                }
-
-                return true;
-
+                return statement.Type != Type.Wrong;
             });
 
             node.Type = allOkay ? Type.Ok : Type.Wrong;
@@ -252,16 +243,13 @@ namespace RG_code.AstVisitors
         public Type Visit(IfElse node)
         {
             dynamic condExprType = Visit((dynamic) node.Condition);
-            foreach (Ast ast in node.Body) Visit((dynamic) ast);
-
-            foreach (Ast ast in node.ElseBody) Visit((dynamic) ast);
-
-            bool okayBody = node.Body.All(statement => { return statement.Type == Type.Ok ? true : false; });
-
-
-            bool okayElseBody = node.Body.All(statement => { return statement.Type == Type.Ok ? true : false; });
-
-
+            foreach (Ast ast in node.Body) 
+                Visit((dynamic) ast);
+            foreach (Ast ast in node.ElseBody) 
+                Visit((dynamic) ast);
+            
+            bool okayBody = node.Body.All(statement => { return statement.Type != Type.Wrong;});
+            bool okayElseBody = node.Body.All(statement => { return statement.Type != Type.Wrong;});
             return okayBody && okayElseBody && condExprType == Type.Bool ? Type.Ok : Type.Wrong;
         }
     }

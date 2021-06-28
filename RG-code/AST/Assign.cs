@@ -7,7 +7,7 @@ namespace RG_code.AST
     {
         public string Id { get;}
 
-        public Assign(string id, Ast value, IToken information) : base(information)
+        public Assign(string id, Expression value, IToken information) : base(information)
         {
             Id = id;
             Value = value;
@@ -16,7 +16,7 @@ namespace RG_code.AST
         }
 
         public Type Type { get; set; }
-        public Ast Value { get; }
+        public Expression Value { get; }
 
         public override string ToString()
         {

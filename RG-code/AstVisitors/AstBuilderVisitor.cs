@@ -25,7 +25,7 @@ namespace RG_code.AstVisitors
         public override Ast VisitAssignment(RGCodeParser.AssignmentContext context)
         {
             var exprContext = context.expr();
-            Ast expr = Visit(exprContext);
+            Expression expr =(Expression) Visit(exprContext);
             Assign result = new(context.ID().GetText(), expr, context.Start);
 
             return result;
@@ -33,7 +33,7 @@ namespace RG_code.AstVisitors
 
         public override Ast VisitVardec(RGCodeParser.VardecContext context)
         {
-            Ast assignment = Visit(context.assignment());
+            Assign assignment =(Assign) Visit(context.assignment());
             Declaration result = new(assignment, context.Start);
 
 
