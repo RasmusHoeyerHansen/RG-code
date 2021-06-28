@@ -1,7 +1,0 @@
-﻿[TestCase("number q = 1;")]
-[TestCase("number x = q;")]
-[TestCase("number y = x;")]
-[TestCase("point p1 = (2,2);")]
-[TestCase("point p2 = (x,2);")]
-[TestCase("point p3 = (2,y);")]
-[TestCase("point p4 = (x,y);")]

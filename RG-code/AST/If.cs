@@ -4,7 +4,7 @@ using Antlr4.Runtime;
 
 namespace RG_code.AST
 {
-    public class If : Ast, IIfVisitable<Ast>
+    public class If : Ast
     {
         public If(Ast condition, IEnumerable<Ast> body, IToken token) : base(token)
         {
@@ -21,12 +21,6 @@ namespace RG_code.AST
 
         public Ast Condition { get; }
         public IEnumerable<Ast> Body { get; }
-
-        public IAst Accept(IIfVisitor<Ast> visitor)
-        {
-            return visitor.Visit(this);
-        }
-
         public override string ToString()
         {
             return "If " + base.ToString();

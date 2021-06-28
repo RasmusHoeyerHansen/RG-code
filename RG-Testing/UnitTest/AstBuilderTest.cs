@@ -1,14 +1,17 @@
+using System;
 using System.Linq;
 using Antlr4.Runtime;
+using Microsoft.Win32.SafeHandles;
 using NUnit.Framework;
 using RG_code.AST;
 using RG_code.AstVisitors;
 using RG_testing.HelperClasses;
+using Type = System.Type;
 
 namespace RG_testing
 {
     [TestFixture]
-    public class AstBuilderTest : ContextCreator
+    public partial class AstBuilderTest : ContextDependable
     {
         [SetUp]
         public void SetUp()
@@ -340,6 +343,54 @@ namespace RG_testing
             ParserRuleContext context = CreateContext<RGCodeParser.IfElseContext>(code);
             IfElse res = (IfElse) _astBuilder.Visit(context);
             Assert.IsTrue(res.ElseBody.Count() == expected);
+        }
+
+        [TestCase("b>2")]
+        [TestCase("b<2")]
+        [TestCase("b==2")]
+        [TestCase("b>2+2")]
+        [TestCase("b<2+2")]
+        [TestCase("b==2+2")]
+        [TestCase("2+2>b")]
+        [TestCase("2+2<b")]
+        [TestCase("2+2==b")]
+        [TestCase("2>b")]
+        [TestCase("2<b")]
+        [TestCase("2==b")]
+        public void InfixBoolNode_GiveCorrectLhsAndRhs(string code)
+        {
+            var cont = CreateContext<RGCodeParser.BoolContext>(code);
+            var result =(InfixBool) _astBuilder.Visit(cont);
+            Assert.AreNotEqual(result.LeftHandSide, result.RightHandSide);
+            
+        }
+
+    }
+
+    //Fixture tests
+    public partial class AstBuilderTest
+    {
+
+        [TestCase("Lines.txt","Correct programs")]
+        [TestCase("Assignments.txt","Correct programs")]
+        [TestCase("Curve.txt","Correct programs")]
+        [TestCase("Declarations.txt","Correct programs")]
+        [TestCase("Lines.txt","Correct programs")]
+        [TestCase("Empty loop.txt","Correct programs/Loop")]
+        [TestCase("Loop with statements.txt","Correct programs/Loop")]
+        [TestCase("Empty if.txt","Correct programs/If")]
+        [TestCase("Empty ifelse.txt","Correct programs/If")]
+        [TestCase("If with statements.txt","Correct programs/If")]
+        [TestCase("Ifelse with statements.txt","Correct programs/If")]
+        [TestCase("Compound arithmetics.txt","Correct programs/Expressions")]
+        [TestCase("Basic arithmetics.txt","Correct programs/Expressions")]
+        [TestCase("Points.txt","Correct programs/Expressions")]
+        public void Fixture_GivesProgramNode(string file,string fixtureSubDir)
+        {
+            ParserRuleContext context = CreateContext<RGCodeParser.ProgramContext>(file, fixtureSubDir);
+            Ast result = _astBuilder.Visit(context);
+            Assert.IsTrue(result is Program);
+
         }
     }
 }

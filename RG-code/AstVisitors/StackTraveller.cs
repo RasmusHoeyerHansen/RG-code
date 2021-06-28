@@ -15,8 +15,8 @@ namespace RG_code.AstVisitors
             ScopeStack = stack;
         }
 
-        public Stack<Scope> ScopeStack { get; set; } = new();
-        public List<TypeError> Errors { get; private set; } = new();
+        public Stack<Scope> ScopeStack { get; } = new();
+        public List<TypeError> Errors { get; } = new();
 
         public virtual string GetErrorText()
         {

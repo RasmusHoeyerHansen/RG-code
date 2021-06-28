@@ -2,18 +2,13 @@
 
 namespace RG_code.AST
 {
-    public class Number : Expression, IMathVisitable<Ast>
+    public class Number : Expression
     {
-        public double Value { get; private set; }
+        public double Value { get;}
 
         public Number(double value, IToken information) : base(information)
         {
             Value = value;
-        }
-
-        public Ast Accept(IMathVisitor<Ast> visitor)
-        {
-            return visitor.Visit(this);
         }
 
         public override string ToString()

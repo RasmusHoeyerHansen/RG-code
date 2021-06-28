@@ -2,7 +2,7 @@
 
 namespace RG_code.AST
 {
-    public abstract class InfixMath : Infix, IInfixMathVisitable<Ast>
+    public abstract class InfixMath : Infix
     {
         public InfixMath(Ast lhs, Ast rhs, IToken token) : base(token)
         {
@@ -24,8 +24,7 @@ namespace RG_code.AST
             foreach (IAst child in Children) child.Parent = this;
         }
 
-        public Ast LeftHandSide { get; set; }
-        public Ast RightHandSide { get; set; }
-        public abstract Ast Accept(IInfixMathVisitor<Ast> visitor);
+        public Ast LeftHandSide { get;}
+        public Ast RightHandSide { get;}
     }
 }

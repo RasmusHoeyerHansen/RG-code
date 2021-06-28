@@ -1,0 +1,7 @@
+﻿number q = 1;
+number x = q;
+number y = x;
+point p1 = (2,2);
+point p2 = (x,2);
+point p3 = (2,y);
+point p4 = (x,y);

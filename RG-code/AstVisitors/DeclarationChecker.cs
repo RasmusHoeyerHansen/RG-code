@@ -69,7 +69,7 @@ namespace RG_code.AstVisitors
         public Ast Visit(Declaration node)
         {
             //Visit values
-            Visit(node.AssignedValue);
+            Visit(node.Assignment);
             //If already declared, add error, else add the declaration
             if (IsDeclared(node))
                 Errors.Add(new TypeError(node, TypeError.ErrorType.DoubleDeclared));
@@ -140,7 +140,6 @@ namespace RG_code.AstVisitors
         public Ast Visit(Line node)
         {
             Visit((dynamic) node.FromPoint);
-
 
             foreach (Ast ast in node.ToChain) Visit((dynamic) ast);
 

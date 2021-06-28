@@ -4,7 +4,7 @@ using Antlr4.Runtime;
 
 namespace RG_code.AST
 {
-    public class Loop : Statement, ILoopVisitable<Ast>
+    public class Loop : Statement
     {
         public Loop(Ast condition, IEnumerable<Ast> body, IToken token) : base(token)
         {
@@ -20,13 +20,8 @@ namespace RG_code.AST
             }
         }
 
-        public Ast Condition { get; set; }
+        public Ast Condition { get;}
         public IEnumerable<Ast> Body { get; }
-
-        public IAst Accept(ILoopVisitor<Ast> visitor)
-        {
-            return visitor.Visit(this);
-        }
 
         public override string ToString()
         {

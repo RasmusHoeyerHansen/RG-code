@@ -184,8 +184,7 @@ public partial class RGCodeBaseVisitor<Result> : AbstractParseTreeVisitor<Result
 	/// <return>The visitor result.</return>
 	public virtual Result VisitCompund([NotNull] RGCodeParser.CompundContext context) { return VisitChildren(context); }
 	/// <summary>
-	/// Visit a parse tree produced by the <c>boolExpression</c>
-	/// labeled alternative in <see cref="RGCodeParser.bool"/>.
+	/// Visit a parse tree produced by <see cref="RGCodeParser.bool"/>.
 	/// <para>
 	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
 	/// on <paramref name="context"/>.
@@ -193,7 +192,7 @@ public partial class RGCodeBaseVisitor<Result> : AbstractParseTreeVisitor<Result
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	public virtual Result VisitBoolExpression([NotNull] RGCodeParser.BoolExpressionContext context) { return VisitChildren(context); }
+	public virtual Result VisitBool([NotNull] RGCodeParser.BoolContext context) { return VisitChildren(context); }
 	/// <summary>
 	/// Visit a parse tree produced by the <c>pointExpression</c>
 	/// labeled alternative in <see cref="RGCodeParser.point"/>.
@@ -227,8 +226,7 @@ public partial class RGCodeBaseVisitor<Result> : AbstractParseTreeVisitor<Result
 	/// <return>The visitor result.</return>
 	public virtual Result VisitMove([NotNull] RGCodeParser.MoveContext context) { return VisitChildren(context); }
 	/// <summary>
-	/// Visit a parse tree produced by the <c>lineCommand</c>
-	/// labeled alternative in <see cref="RGCodeParser.line"/>.
+	/// Visit a parse tree produced by <see cref="RGCodeParser.line"/>.
 	/// <para>
 	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
 	/// on <paramref name="context"/>.
@@ -236,10 +234,9 @@ public partial class RGCodeBaseVisitor<Result> : AbstractParseTreeVisitor<Result
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	public virtual Result VisitLineCommand([NotNull] RGCodeParser.LineCommandContext context) { return VisitChildren(context); }
+	public virtual Result VisitLine([NotNull] RGCodeParser.LineContext context) { return VisitChildren(context); }
 	/// <summary>
-	/// Visit a parse tree produced by the <c>curveCommand</c>
-	/// labeled alternative in <see cref="RGCodeParser.curve"/>.
+	/// Visit a parse tree produced by <see cref="RGCodeParser.curve"/>.
 	/// <para>
 	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
 	/// on <paramref name="context"/>.
@@ -247,7 +244,7 @@ public partial class RGCodeBaseVisitor<Result> : AbstractParseTreeVisitor<Result
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	public virtual Result VisitCurveCommand([NotNull] RGCodeParser.CurveCommandContext context) { return VisitChildren(context); }
+	public virtual Result VisitCurve([NotNull] RGCodeParser.CurveContext context) { return VisitChildren(context); }
 	/// <summary>
 	/// Visit a parse tree produced by the <c>to</c>
 	/// labeled alternative in <see cref="RGCodeParser.toCommands"/>.

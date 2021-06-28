@@ -27,5 +27,20 @@ namespace RG_code.AST
         {
             return $"position at line {Information.Line}, column {Information.Column}";
         }
+
+        public override bool Equals(object? obj)
+        {
+            //If they cannot be compared, since they are different objects.
+            if ((obj == null) || !this.GetType().Equals(obj.GetType()))
+            { 
+                return false;
+            }
+            else
+            {
+                Ast other = (Ast) obj;
+                return (this.Information.ToString() == other.Information.ToString()) && (this.Parent == other.Parent);
+            }
+        }
+        
     }
 }

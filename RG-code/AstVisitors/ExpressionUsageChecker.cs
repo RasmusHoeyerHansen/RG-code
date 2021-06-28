@@ -13,6 +13,7 @@ namespace RG_code.AstVisitors
         public ExpressionUsageChecker(Stack<Scope> scope) : base(scope)
         {
         }
+        
 
         public Type Visit(Plus node)
         {
@@ -52,7 +53,7 @@ namespace RG_code.AstVisitors
             if (xType != Type.Number || yType != Type.Number)
             {
                 Errors.Add(new TypeError(node, TypeError.ErrorType.ExpressionInconsistency, xType, yType));
-                return Type.Wrong;
+                return SetAndReturn(node, Type.Wrong);
             }
 
             return SetAndReturn(node, Type.Point);
@@ -61,23 +62,22 @@ namespace RG_code.AstVisitors
         public Type Visit(Line node)
         {
             Visit((dynamic) node.FromPoint);
-            if (node.FromPoint.Type != Type.Point)
-                Errors.Add(new TypeError(node.FromPoint, TypeError.ErrorType.IncorrectUsage,
-                    "start point is wrongly typed."));
+            
+            bool isWrong = node.FromPoint.Type != Type.Point;
 
-            bool containsWrongType = false;
             foreach (Ast ast in node.ToChain)
             {
                 Visit((dynamic) ast);
                 if (ast.Type == Type.Point) continue;
-                Errors.Add(
-                    new TypeError(ast, TypeError.ErrorType.IncorrectUsage, "point in to chain is wrongly typed."));
-                containsWrongType = true;
+                if (ast is NameReference n)
+                {
+                    Errors.Add(new TypeError(n, TypeError.ErrorType.IncorrectUsage, n.Type));
+                }
+                
+                isWrong = true;
             }
-
-
-            return containsWrongType ? SetAndReturn(node, Type.Wrong) : SetAndReturn(node, Type.Ok);
-            ;
+            
+            return isWrong ? SetAndReturn(node, Type.Wrong) : SetAndReturn(node, Type.Ok);
         }
 
         public Type Visit(Curve node)
@@ -109,10 +109,11 @@ namespace RG_code.AstVisitors
 
         public Type Visit(Assign node)
         {
-            Type declaredType = GetDeclaration(node.Id).Type;
-            Visit((dynamic) node.Value);
+            Type declaredType;
+            declaredType = GetDeclaration(node.Id).Type;
+                Visit((dynamic) node.Value);
 
-            if (node.Type != declaredType)
+                if (node.Type != declaredType)
             {
                 Errors.Add(new TypeError(node, TypeError.ErrorType.IncorrectUsage,
                     $"declared type is {declaredType} but got {node.Type} as assigned value"));
@@ -125,25 +126,28 @@ namespace RG_code.AstVisitors
                 return Type.Wrong;
             }
 
-            return Type.Ok;
+            return SetAndReturn(node, declaredType);
         }
 
         public Type Visit(NameReference node)
         {
             Declaration foundNode = GetDeclaration(node);
-            if (foundNode == null) return Type.NotDeclared;
+            if (foundNode == null)
+            {
+                return SetAndReturn(node,Type.NotDeclared);
+            }
 
-            return foundNode.Type;
+            return SetAndReturn(node, foundNode.Type);
         }
 
         public Type Visit(Declaration node)
         {
-            Visit(node.AssignedValue);
+            Visit((dynamic)node.Assignment.Value);
 
-            if (node.AssignedValue.Type != node.Type) return SetAndReturn(node, Type.Wrong);
+            if (node.Assignment.Value.Type != node.Type) return SetAndReturn(node, Type.Wrong);
 
             //Nodes are already typed when created
-            return Type.Ok;
+            return node.Type;
         }
 
         public Type Visit(GreaterThan node)
@@ -165,13 +169,16 @@ namespace RG_code.AstVisitors
         {
             dynamic conditionType = Visit((dynamic) node.Condition);
             if (conditionType != Type.Bool)
+            {
                 Errors.Add(new TypeError(node.Condition, TypeError.ErrorType.IncorrectUsage,
                     "condition is wrongly typed."));
+            }
 
-            foreach (Ast ast in node.Body) Visit((dynamic) ast);
+            foreach (Ast ast in node.Body) 
+                Visit((dynamic) ast);
 
             bool allOkay = node.Body.All(statement => { return statement.Type == Type.Ok ? true : false; });
-
+            
             return allOkay ? Type.Ok : Type.Wrong;
         }
 
@@ -183,10 +190,8 @@ namespace RG_code.AstVisitors
 
             if (lhsType != rhsType)
             {
-                Errors.Add(new TypeError(infixBool, TypeError.ErrorType.ExpressionInconsistency, lhsType, rhsType));
-                return Type.Wrong;
+                return SetAndReturn(infixBool, Type.Wrong);
             }
-
 
             return SetAndReturn(infixBool, Type.Bool);
         }
@@ -198,8 +203,7 @@ namespace RG_code.AstVisitors
 
             if (lhsType != rhsType)
             {
-                Errors.Add(new TypeError(infixMath, TypeError.ErrorType.ExpressionInconsistency, lhsType, rhsType));
-                return Type.Wrong;
+                return SetAndReturn(infixMath, Type.Wrong);
             }
 
             return SetAndReturn(infixMath, Type.Number);
@@ -211,7 +215,7 @@ namespace RG_code.AstVisitors
             return t;
         }
 
-
+            
         public Ast Visit(Program node)
         {
             foreach (Ast nodeProgramStatement in node.ProgramStatements) Visit((dynamic) nodeProgramStatement);
@@ -220,11 +224,17 @@ namespace RG_code.AstVisitors
             //Notice that all nodes must be statement - else caught by parser.
             bool allOkay = node.ProgramStatements.All(statement =>
             {
-                return statement.Type == Type.Ok ? true : false;
+                if (statement.Type == Type.Wrong)
+                {
+                    return false;
+                }
+
+                return true;
+
             });
 
-
-            return allOkay ? node : null;
+            node.Type = allOkay ? Type.Ok : Type.Wrong;
+            return node;
         }
 
         public Type Visit(If node)

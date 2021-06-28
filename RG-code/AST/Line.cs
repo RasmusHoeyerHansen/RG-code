@@ -4,7 +4,7 @@ using Antlr4.Runtime;
 
 namespace RG_code.AST
 {
-    public class Line : Statement, ILineVisitable<Ast>
+    public class Line : Statement
     {
         public Line(Ast from, IEnumerable<Ast> toChain, IToken information) : base(information)
         {
@@ -19,13 +19,8 @@ namespace RG_code.AST
             }
         }
 
-        public Ast FromPoint { get; set; }
-        public IEnumerable<Ast> ToChain { get; set; }
-
-        public Ast Accept(ILineVisitor<Ast> visitor)
-        {
-            return visitor.Visit(this);
-        }
+        public Ast FromPoint { get; }
+        public IEnumerable<Ast> ToChain { get; }
 
         public override string ToString()
         {

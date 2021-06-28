@@ -26,7 +26,7 @@ namespace RG_code.AST
             }
         }
 
-        public IEnumerable<Ast> ElseBody { get; private set; }
+        public IEnumerable<Ast> ElseBody { get; }
 
         public override string ToString()
         {

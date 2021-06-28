@@ -914,18 +914,6 @@ public partial class RGCodeParser : Parser {
 	}
 
 	public partial class BoolContext : ParserRuleContext {
-		public BoolContext(ParserRuleContext parent, int invokingState)
-			: base(parent, invokingState)
-		{
-		}
-		public override int RuleIndex { get { return RULE_bool; } }
-	 
-		public BoolContext() { }
-		public virtual void CopyFrom(BoolContext context) {
-			base.CopyFrom(context);
-		}
-	}
-	public partial class BoolExpressionContext : BoolContext {
 		public MathContext lhs;
 		public IToken @operator;
 		public MathContext rhs;
@@ -936,21 +924,25 @@ public partial class RGCodeParser : Parser {
 			return GetRuleContext<MathContext>(i);
 		}
 		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode BoolOperator() { return GetToken(RGCodeParser.BoolOperator, 0); }
-		public BoolExpressionContext(BoolContext context) { CopyFrom(context); }
+		public BoolContext(ParserRuleContext parent, int invokingState)
+			: base(parent, invokingState)
+		{
+		}
+		public override int RuleIndex { get { return RULE_bool; } }
 		[System.Diagnostics.DebuggerNonUserCode]
 		public override void EnterRule(IParseTreeListener listener) {
 			IRGCodeListener typedListener = listener as IRGCodeListener;
-			if (typedListener != null) typedListener.EnterBoolExpression(this);
+			if (typedListener != null) typedListener.EnterBool(this);
 		}
 		[System.Diagnostics.DebuggerNonUserCode]
 		public override void ExitRule(IParseTreeListener listener) {
 			IRGCodeListener typedListener = listener as IRGCodeListener;
-			if (typedListener != null) typedListener.ExitBoolExpression(this);
+			if (typedListener != null) typedListener.ExitBool(this);
 		}
 		[System.Diagnostics.DebuggerNonUserCode]
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			IRGCodeVisitor<TResult> typedVisitor = visitor as IRGCodeVisitor<TResult>;
-			if (typedVisitor != null) return typedVisitor.VisitBoolExpression(this);
+			if (typedVisitor != null) return typedVisitor.VisitBool(this);
 			else return visitor.VisitChildren(this);
 		}
 	}
@@ -960,15 +952,14 @@ public partial class RGCodeParser : Parser {
 		BoolContext _localctx = new BoolContext(Context, State);
 		EnterRule(_localctx, 18, RULE_bool);
 		try {
-			_localctx = new BoolExpressionContext(_localctx);
 			EnterOuterAlt(_localctx, 1);
 			{
 			State = 95;
-			((BoolExpressionContext)_localctx).lhs = math();
+			_localctx.lhs = math();
 			State = 96;
-			((BoolExpressionContext)_localctx).@operator = Match(BoolOperator);
+			_localctx.@operator = Match(BoolOperator);
 			State = 97;
-			((BoolExpressionContext)_localctx).rhs = math();
+			_localctx.rhs = math();
 			}
 		}
 		catch (RecognitionException re) {
@@ -1159,18 +1150,6 @@ public partial class RGCodeParser : Parser {
 	}
 
 	public partial class LineContext : ParserRuleContext {
-		public LineContext(ParserRuleContext parent, int invokingState)
-			: base(parent, invokingState)
-		{
-		}
-		public override int RuleIndex { get { return RULE_line; } }
-	 
-		public LineContext() { }
-		public virtual void CopyFrom(LineContext context) {
-			base.CopyFrom(context);
-		}
-	}
-	public partial class LineCommandContext : LineContext {
 		public PointContext from;
 		[System.Diagnostics.DebuggerNonUserCode] public PointContext point() {
 			return GetRuleContext<PointContext>(0);
@@ -1181,21 +1160,25 @@ public partial class RGCodeParser : Parser {
 		[System.Diagnostics.DebuggerNonUserCode] public ToCommandsContext toCommands(int i) {
 			return GetRuleContext<ToCommandsContext>(i);
 		}
-		public LineCommandContext(LineContext context) { CopyFrom(context); }
+		public LineContext(ParserRuleContext parent, int invokingState)
+			: base(parent, invokingState)
+		{
+		}
+		public override int RuleIndex { get { return RULE_line; } }
 		[System.Diagnostics.DebuggerNonUserCode]
 		public override void EnterRule(IParseTreeListener listener) {
 			IRGCodeListener typedListener = listener as IRGCodeListener;
-			if (typedListener != null) typedListener.EnterLineCommand(this);
+			if (typedListener != null) typedListener.EnterLine(this);
 		}
 		[System.Diagnostics.DebuggerNonUserCode]
 		public override void ExitRule(IParseTreeListener listener) {
 			IRGCodeListener typedListener = listener as IRGCodeListener;
-			if (typedListener != null) typedListener.ExitLineCommand(this);
+			if (typedListener != null) typedListener.ExitLine(this);
 		}
 		[System.Diagnostics.DebuggerNonUserCode]
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			IRGCodeVisitor<TResult> typedVisitor = visitor as IRGCodeVisitor<TResult>;
-			if (typedVisitor != null) return typedVisitor.VisitLineCommand(this);
+			if (typedVisitor != null) return typedVisitor.VisitLine(this);
 			else return visitor.VisitChildren(this);
 		}
 	}
@@ -1206,13 +1189,12 @@ public partial class RGCodeParser : Parser {
 		EnterRule(_localctx, 24, RULE_line);
 		int _la;
 		try {
-			_localctx = new LineCommandContext(_localctx);
 			EnterOuterAlt(_localctx, 1);
 			{
 			State = 112;
 			Match(T__10);
 			State = 113;
-			((LineCommandContext)_localctx).from = point();
+			_localctx.from = point();
 			State = 115;
 			ErrorHandler.Sync(this);
 			_la = TokenStream.LA(1);
@@ -1241,18 +1223,6 @@ public partial class RGCodeParser : Parser {
 	}
 
 	public partial class CurveContext : ParserRuleContext {
-		public CurveContext(ParserRuleContext parent, int invokingState)
-			: base(parent, invokingState)
-		{
-		}
-		public override int RuleIndex { get { return RULE_curve; } }
-	 
-		public CurveContext() { }
-		public virtual void CopyFrom(CurveContext context) {
-			base.CopyFrom(context);
-		}
-	}
-	public partial class CurveCommandContext : CurveContext {
 		public PointContext from;
 		public MathContext angle;
 		[System.Diagnostics.DebuggerNonUserCode] public PointContext point() {
@@ -1267,21 +1237,25 @@ public partial class RGCodeParser : Parser {
 		[System.Diagnostics.DebuggerNonUserCode] public ToCommandsContext toCommands(int i) {
 			return GetRuleContext<ToCommandsContext>(i);
 		}
-		public CurveCommandContext(CurveContext context) { CopyFrom(context); }
+		public CurveContext(ParserRuleContext parent, int invokingState)
+			: base(parent, invokingState)
+		{
+		}
+		public override int RuleIndex { get { return RULE_curve; } }
 		[System.Diagnostics.DebuggerNonUserCode]
 		public override void EnterRule(IParseTreeListener listener) {
 			IRGCodeListener typedListener = listener as IRGCodeListener;
-			if (typedListener != null) typedListener.EnterCurveCommand(this);
+			if (typedListener != null) typedListener.EnterCurve(this);
 		}
 		[System.Diagnostics.DebuggerNonUserCode]
 		public override void ExitRule(IParseTreeListener listener) {
 			IRGCodeListener typedListener = listener as IRGCodeListener;
-			if (typedListener != null) typedListener.ExitCurveCommand(this);
+			if (typedListener != null) typedListener.ExitCurve(this);
 		}
 		[System.Diagnostics.DebuggerNonUserCode]
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			IRGCodeVisitor<TResult> typedVisitor = visitor as IRGCodeVisitor<TResult>;
-			if (typedVisitor != null) return typedVisitor.VisitCurveCommand(this);
+			if (typedVisitor != null) return typedVisitor.VisitCurve(this);
 			else return visitor.VisitChildren(this);
 		}
 	}
@@ -1292,13 +1266,12 @@ public partial class RGCodeParser : Parser {
 		EnterRule(_localctx, 26, RULE_curve);
 		int _la;
 		try {
-			_localctx = new CurveCommandContext(_localctx);
 			EnterOuterAlt(_localctx, 1);
 			{
 			State = 119;
 			Match(T__11);
 			State = 120;
-			((CurveCommandContext)_localctx).from = point();
+			_localctx.from = point();
 			State = 122;
 			ErrorHandler.Sync(this);
 			_la = TokenStream.LA(1);
@@ -1316,7 +1289,7 @@ public partial class RGCodeParser : Parser {
 			State = 126;
 			Match(T__12);
 			State = 127;
-			((CurveCommandContext)_localctx).angle = math();
+			_localctx.angle = math();
 			}
 		}
 		catch (RecognitionException re) {

@@ -2,20 +2,15 @@
 
 namespace RG_code.AST
 {
-    public class NameReference : Expression, IIdVisitable<Ast>
+    public class NameReference : Expression
     {
-        public string Name { get; private set; }
+        public string Name { get; }
 
         public NameReference(string Id, IToken information) : base(information)
         {
             Name = Id;
         }
 
-
-        public Ast Accept(IIdVisitor<Ast> visitor)
-        {
-            return visitor.Visit(this);
-        }
 
         public override string ToString()
         {

@@ -3,7 +3,7 @@ using Antlr4.Runtime;
 
 namespace RG_code.AST
 {
-    public class Curve : Statement, ICurveVisitable<Ast>
+    public class Curve : Statement
     {
         public Curve(Ast fromPoint, IEnumerable<Ast> toChain, Ast angle, IToken information) : base(information)
         {
@@ -19,14 +19,10 @@ namespace RG_code.AST
             }
         }
 
-        public Ast FromPoint { get; set; }
-        public IEnumerable<Ast> ToChain { get; set; }
-        public Ast Angle { get; set; }
+        public Ast FromPoint { get;  }
+        public IEnumerable<Ast> ToChain { get; }
+        public Ast Angle { get; }
 
-        public Ast Accept(ICurveVisitor<Ast> visitor)
-        {
-            return visitor.Visit(this);
-        }
 
         public override string ToString()
         {

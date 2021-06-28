@@ -8,10 +8,6 @@ namespace RG_code.AST
         {
         }
 
-        public override Ast Accept(IInfixBoolVisitor<Ast> visitor)
-        {
-            return visitor.Visit(this);
-        }
 
         public override string ToString()
         {

@@ -24,7 +24,8 @@ namespace RG_code.AstVisitors
 
         public override Ast VisitAssignment(RGCodeParser.AssignmentContext context)
         {
-            Ast expr = Visit(context.expr());
+            var exprContext = context.expr();
+            Ast expr = Visit(exprContext);
             Assign result = new(context.ID().GetText(), expr, context.Start);
 
             return result;
@@ -56,8 +57,12 @@ namespace RG_code.AstVisitors
             return Visit(context.line());
         }
 
+        
+        
+        
 
-        public override Ast VisitLineCommand(RGCodeParser.LineCommandContext context)
+
+        public override Ast VisitLine(RGCodeParser.LineContext context)
         {
             Ast from = Visit(context.@from);
             List<Ast> toChain = new();
@@ -71,7 +76,7 @@ namespace RG_code.AstVisitors
             return result;
         }
 
-        public override Ast VisitCurveCommand(RGCodeParser.CurveCommandContext context)
+        public override Ast VisitCurve(RGCodeParser.CurveContext context)
         {
             Ast from = Visit(context.@from);
             List<Ast> toChain = new();
@@ -98,10 +103,11 @@ namespace RG_code.AstVisitors
             return new Point(lhs, rhs, context.Start);
         }
 
-        public override Ast VisitBoolExpression(RGCodeParser.BoolExpressionContext context)
+
+        public override Ast VisitBool(RGCodeParser.BoolContext context)
         {
             Ast lhs = Visit(context.lhs);
-            Ast rhs = Visit(context.lhs);
+            Ast rhs = Visit(context.rhs);
             switch (context.@operator.Text)
             {
                 case ">":
@@ -197,7 +203,8 @@ namespace RG_code.AstVisitors
         {
             if (context.assignment() != null)
             {
-                return VisitAssignment(context.assignment());
+                var ass = context.assignment();
+                return VisitAssignment(ass);
             }
             else if (context.@if() != null)
             {
@@ -221,7 +228,7 @@ namespace RG_code.AstVisitors
                 return VisitMove(context.move());
             }
 
-            return null;
+            throw new NotSupportedException();
         }
 
         public override Ast VisitCompund(RGCodeParser.CompundContext context)

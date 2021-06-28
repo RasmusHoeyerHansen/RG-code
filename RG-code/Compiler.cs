@@ -29,12 +29,12 @@ namespace RG_code
             //ast.Accept(printer);
 
             DeclarationChecker checker = new();
-            ast.Accept(checker);
+            checker.Visit(ast);
             PrintErrors("Declaration errors: ", checker.Errors);
 
 
             ExpressionUsageChecker exprChecker = new(checker.ScopeStack);
-            ast.Accept(exprChecker);
+            exprChecker.Visit(ast);
             PrintErrors("Expression errors: ", exprChecker.Errors);
         }
 

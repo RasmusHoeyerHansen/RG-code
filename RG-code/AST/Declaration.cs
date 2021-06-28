@@ -2,25 +2,19 @@
 
 namespace RG_code.AST
 {
-    public class Declaration : Statement, IDeclarationVisitable<Ast>
+    public class Declaration : Statement
     {
-        public string Name { get; private set; }
+        public string Name { get;  }
 
         public Declaration(Ast assignedValue, IToken information) : base(information)
         {
-            AssignedValue = (Assign) assignedValue;
-            AssignedValue.Parent = this;
+            Assignment = (Assign) assignedValue;
+            Assignment.Parent = this;
             Children.Add(assignedValue);
-            Name = AssignedValue.Id;
+            Name = Assignment.Id;
         }
 
-        public Assign AssignedValue { get; set; }
-
-        public Ast Accept(IDeclarationVisitor<Ast> visitor)
-        {
-            return visitor.Visit(this);
-        }
-
+        public Assign Assignment { get; }
         public override string ToString()
         {
             return $"{Name} " + base.ToString();

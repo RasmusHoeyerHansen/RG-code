@@ -14,7 +14,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Content Include="Fixtures programs\Correct\Expressions\Basic arithmetics.txt" />
+      <Content Include="Fixture programs\Correct programs\Expressions\Basic arithmetics.txt" />
     </ItemGroup>
 
     <ItemGroup>

@@ -2,7 +2,7 @@
 
 namespace RG_code.AST
 {
-    public class Point : Expression, IPointVisitable<Ast>
+    public class Point : Expression
     {
         public Point(Ast xValue, Ast yValue, IToken information) : base(information)
         {
@@ -17,12 +17,6 @@ namespace RG_code.AST
         public Ast XValue { get; }
 
         public Ast YValue { get; }
-
-        public Ast Accept(IPointVisitor<Ast> visitor)
-        {
-            return visitor.Visit(this);
-        }
-
         public override string ToString()
         {
             return "Point " + base.ToString();

@@ -22,7 +22,7 @@ atom            : value=Number                     #value
                | value=ID                     #idMath
                | '('math')'                     #compund;
 
-bool: lhs=math operator=BoolOperator rhs=math #boolExpression;
+bool: lhs=math operator=BoolOperator rhs=math;
 
 point: '(' lhs=math ',' rhs=math')'   #pointExpression
      | value=ID #idPoint;
@@ -30,8 +30,8 @@ point: '(' lhs=math ',' rhs=math')'   #pointExpression
 
 move: (line | curve );
 
-line: 'line from' from=point toCommands+  #lineCommand;
-curve: 'curve from' from=point toCommands+ 'with angle' angle=math #curveCommand;
+line: 'line from' from=point toCommands+ ;
+curve: 'curve from' from=point toCommands+ 'with angle' angle=math;
 toCommands: ('to ' p=point) #to;
 
 repeat: 'repeat' 'until' cond=bool ScopeStart statement* ScopeEnd 'loop';

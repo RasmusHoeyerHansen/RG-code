@@ -5,7 +5,7 @@ using Antlr4.Runtime;
 
 namespace RG_testing.HelperClasses
 {
-    public class ContextCreator : ParserCreator
+    public class ContextDependable : ParserDependable
     {
         protected ParserRuleContext CreateContext<Context>(string codeExpression)
             where Context : ParserRuleContext

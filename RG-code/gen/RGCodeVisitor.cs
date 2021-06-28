@@ -125,12 +125,11 @@ public interface IRGCodeVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <return>The visitor result.</return>
 	Result VisitCompund([NotNull] RGCodeParser.CompundContext context);
 	/// <summary>
-	/// Visit a parse tree produced by the <c>boolExpression</c>
-	/// labeled alternative in <see cref="RGCodeParser.bool"/>.
+	/// Visit a parse tree produced by <see cref="RGCodeParser.bool"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	Result VisitBoolExpression([NotNull] RGCodeParser.BoolExpressionContext context);
+	Result VisitBool([NotNull] RGCodeParser.BoolContext context);
 	/// <summary>
 	/// Visit a parse tree produced by the <c>pointExpression</c>
 	/// labeled alternative in <see cref="RGCodeParser.point"/>.
@@ -152,19 +151,17 @@ public interface IRGCodeVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <return>The visitor result.</return>
 	Result VisitMove([NotNull] RGCodeParser.MoveContext context);
 	/// <summary>
-	/// Visit a parse tree produced by the <c>lineCommand</c>
-	/// labeled alternative in <see cref="RGCodeParser.line"/>.
+	/// Visit a parse tree produced by <see cref="RGCodeParser.line"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	Result VisitLineCommand([NotNull] RGCodeParser.LineCommandContext context);
+	Result VisitLine([NotNull] RGCodeParser.LineContext context);
 	/// <summary>
-	/// Visit a parse tree produced by the <c>curveCommand</c>
-	/// labeled alternative in <see cref="RGCodeParser.curve"/>.
+	/// Visit a parse tree produced by <see cref="RGCodeParser.curve"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	Result VisitCurveCommand([NotNull] RGCodeParser.CurveCommandContext context);
+	Result VisitCurve([NotNull] RGCodeParser.CurveContext context);
 	/// <summary>
 	/// Visit a parse tree produced by the <c>to</c>
 	/// labeled alternative in <see cref="RGCodeParser.toCommands"/>.

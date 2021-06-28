@@ -23,27 +23,27 @@ end loop;
 
 
 repeat until 2<2 begin
-iff 2 == 2 then
+iff 2 == 2
     begin
     
     end if;
 end loop;
 
 repeat until 2<2 begin
-    iff 2 == 2 then
+    iff 2 == 2
         begin
         
-        end;
+        end if;
   
 end loop;
 
 repeat until 2<2 begin
-    iff 2 == 2 then
+    iff 2 == 2
         begin
         
-        end
-    else do
+        end if
+    else
         begin
         
-        end; 
+        end else ;
 end loop;

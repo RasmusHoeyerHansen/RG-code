@@ -1,0 +1,31 @@
+﻿number n = 2;
+number q = 3;
+
+iff 3 < 3 begin end if;
+
+iff 3 > 3 begin end if;
+
+iff 3 == 3 begin end if;
+
+iff 3 < 3+3 begin end if;
+
+iff 3 > 3*3 begin end if;
+
+iff 3 == 3/3 begin end if;
+
+iff 3 == 3^3 begin end if;
+
+
+
+iff n < 3 begin end if;
+
+iff n > 3 begin end if;
+
+iff n == 3 begin end if;
+
+iff n < q begin end if;
+
+iff n > q begin end if;
+
+iff n == q begin end if;
+

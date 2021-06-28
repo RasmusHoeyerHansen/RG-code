@@ -189,17 +189,15 @@ public interface IRGCodeListener : IParseTreeListener {
 	/// <param name="context">The parse tree.</param>
 	void ExitCompund([NotNull] RGCodeParser.CompundContext context);
 	/// <summary>
-	/// Enter a parse tree produced by the <c>boolExpression</c>
-	/// labeled alternative in <see cref="RGCodeParser.bool"/>.
+	/// Enter a parse tree produced by <see cref="RGCodeParser.bool"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void EnterBoolExpression([NotNull] RGCodeParser.BoolExpressionContext context);
+	void EnterBool([NotNull] RGCodeParser.BoolContext context);
 	/// <summary>
-	/// Exit a parse tree produced by the <c>boolExpression</c>
-	/// labeled alternative in <see cref="RGCodeParser.bool"/>.
+	/// Exit a parse tree produced by <see cref="RGCodeParser.bool"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void ExitBoolExpression([NotNull] RGCodeParser.BoolExpressionContext context);
+	void ExitBool([NotNull] RGCodeParser.BoolContext context);
 	/// <summary>
 	/// Enter a parse tree produced by the <c>pointExpression</c>
 	/// labeled alternative in <see cref="RGCodeParser.point"/>.
@@ -235,29 +233,25 @@ public interface IRGCodeListener : IParseTreeListener {
 	/// <param name="context">The parse tree.</param>
 	void ExitMove([NotNull] RGCodeParser.MoveContext context);
 	/// <summary>
-	/// Enter a parse tree produced by the <c>lineCommand</c>
-	/// labeled alternative in <see cref="RGCodeParser.line"/>.
+	/// Enter a parse tree produced by <see cref="RGCodeParser.line"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void EnterLineCommand([NotNull] RGCodeParser.LineCommandContext context);
+	void EnterLine([NotNull] RGCodeParser.LineContext context);
 	/// <summary>
-	/// Exit a parse tree produced by the <c>lineCommand</c>
-	/// labeled alternative in <see cref="RGCodeParser.line"/>.
+	/// Exit a parse tree produced by <see cref="RGCodeParser.line"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void ExitLineCommand([NotNull] RGCodeParser.LineCommandContext context);
+	void ExitLine([NotNull] RGCodeParser.LineContext context);
 	/// <summary>
-	/// Enter a parse tree produced by the <c>curveCommand</c>
-	/// labeled alternative in <see cref="RGCodeParser.curve"/>.
+	/// Enter a parse tree produced by <see cref="RGCodeParser.curve"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void EnterCurveCommand([NotNull] RGCodeParser.CurveCommandContext context);
+	void EnterCurve([NotNull] RGCodeParser.CurveContext context);
 	/// <summary>
-	/// Exit a parse tree produced by the <c>curveCommand</c>
-	/// labeled alternative in <see cref="RGCodeParser.curve"/>.
+	/// Exit a parse tree produced by <see cref="RGCodeParser.curve"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void ExitCurveCommand([NotNull] RGCodeParser.CurveCommandContext context);
+	void ExitCurve([NotNull] RGCodeParser.CurveContext context);
 	/// <summary>
 	/// Enter a parse tree produced by the <c>to</c>
 	/// labeled alternative in <see cref="RGCodeParser.toCommands"/>.

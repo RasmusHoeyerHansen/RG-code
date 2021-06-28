@@ -3,9 +3,9 @@ using Antlr4.Runtime;
 
 namespace RG_code.AST
 {
-    public class Assign : Statement, IAssignVisitable<Ast>
+    public class Assign : Statement
     {
-        public string Id { get; private set; }
+        public string Id { get;}
 
         public Assign(string id, Ast value, IToken information) : base(information)
         {
@@ -16,12 +16,7 @@ namespace RG_code.AST
         }
 
         public Type Type { get; set; }
-        public Ast Value { get; set; }
-
-        public Ast Accept(IAssignmentVisitor<Ast> visitor)
-        {
-            return visitor.Visit(this);
-        }
+        public Ast Value { get; }
 
         public override string ToString()
         {

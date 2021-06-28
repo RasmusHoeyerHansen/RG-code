@@ -1,0 +1,31 @@
+﻿number n = 2;
+number q = 3;
+
+repeat until 3 < 3 begin end loop;
+
+repeat until 3 > 3 begin end loop;
+
+repeat until 3 == 3 begin end loop;
+
+repeat until 3 < 3+3 begin end loop;
+
+repeat until 3 > 3*3 begin end loop;
+
+repeat until 3 == 3/3 begin end loop;
+
+repeat until 3 == 3^3 begin end loop;
+
+
+
+repeat until n < 3 begin end loop;
+
+repeat until n > 3 begin end loop;
+
+repeat until n == 3 begin end loop;
+
+repeat until n < q begin end loop;
+
+repeat until n > q begin end loop;
+
+repeat until n == q begin end loop;
+

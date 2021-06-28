@@ -2,7 +2,7 @@
 
 namespace RG_code.AST
 {
-    public abstract class InfixBool : Infix, IInfixBoolVisitable<Ast>
+    public abstract class InfixBool : Infix
     {
         public InfixBool(Ast lhs, Ast rhs, IToken token, IAst parent) : base(parent, token)
         {
@@ -23,8 +23,7 @@ namespace RG_code.AST
             foreach (IAst child in Children) child.Parent = this;
         }
 
-        public Ast LeftHandSide { get; set; }
-        public Ast RightHandSide { get; set; }
-        public abstract Ast Accept(IInfixBoolVisitor<Ast> visitor);
+        public Ast LeftHandSide { get;}
+        public Ast RightHandSide { get;}
     }
 }

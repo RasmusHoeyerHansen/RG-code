@@ -8,11 +8,6 @@ namespace RG_code.AST
         {
         }
 
-        public override Ast Accept(IInfixMathVisitor<Ast> visitor)
-        {
-            return visitor.Visit(this);
-        }
-
         public override string ToString()
         {
             return "Plus " + base.ToString();

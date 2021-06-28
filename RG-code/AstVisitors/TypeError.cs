@@ -25,11 +25,11 @@ namespace RG_code.AstVisitors
             SecondType = t2;
         }
 
-        public TypeError(Ast node, ErrorType typeOfError, Type t1, Type t2, Type expected) : this(node, typeOfError, t1,
+        /*public TypeError(Ast node, ErrorType typeOfError, Type t1, Type t2, Type expected) : this(node, typeOfError, t1,
             t2)
         {
             Expected = expected;
-        }
+        }*/
 
         public TypeError(Ast node, ErrorType typeOfError, Type t1) : this(node, typeOfError)
         {
@@ -42,7 +42,7 @@ namespace RG_code.AstVisitors
             OptionalText += optionalText;
         }
 
-        public ErrorType TypeOfError { get; set; }
+        public ErrorType TypeOfError { get;}
 
         private string _nodeInfo = " ";
 
@@ -52,13 +52,13 @@ namespace RG_code.AstVisitors
             set => _nodeInfo = value;
         }
 
-        private Type FirstType { get; set; }
+        private Type FirstType { get;}
 
-        private Type SecondType { get; set; }
-        private Type Expected { get; set; }
+        private Type SecondType { get; }
+        private Type Expected { get; }
 
-        private string OptionalText { get; set; } = ", ";
-        private Ast Node { get; set; }
+        private string OptionalText { get; } = ", ";
+        private Ast Node { get; }
 
         public override string ToString()
         {

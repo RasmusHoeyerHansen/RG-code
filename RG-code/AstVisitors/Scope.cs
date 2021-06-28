@@ -5,7 +5,7 @@ namespace RG_code.AstVisitors
 {
     public class Scope
     {
-        public Dictionary<string, Declaration> ContainedVariables { get; private set; } =
+        public Dictionary<string, Declaration> ContainedVariables { get; } =
             new();
 
         public Scope ParentScope { get; private set; }
