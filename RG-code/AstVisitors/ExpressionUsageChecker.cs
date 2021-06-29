@@ -115,13 +115,7 @@ namespace RG_code.AstVisitors
         {
             Type declaredType = GetDeclaration(node.Id).Type;
             Visit((dynamic) node.Value);
-
-            if (node.Type != declaredType)
-            {
-                Errors.Add(new TypeError(node, TypeError.ErrorType.IncorrectUsage,
-                    $"declared type is {declaredType} but got {node.Type} as assigned value"));
-                return Type.Wrong;
-            }
+            
 
             if (declaredType != node.Value.Type)
             {
@@ -129,7 +123,7 @@ namespace RG_code.AstVisitors
                 return Type.Wrong;
             }
 
-            return SetAndReturn(node, declaredType);
+            return SetAndReturn(node, Type.Ok);
         }
 
         public Type Visit(NameReference node)

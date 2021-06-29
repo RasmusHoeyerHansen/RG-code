@@ -13,7 +13,6 @@ namespace RG_testing.UnitTest
         private static Regex G00Regex { get; } = new Regex(@"^G00 X-?\d*\.{0,1}\d+ Y-?\d*\.{0,1}\d+$");
         private static Regex G01Regex { get; } = new Regex(@"^G01 X-?\d*\.{0,1}\d+ Y-?\d*\.{0,1}\d+$");
 
-
         private IMovementEmitter _emitter;
         private Movement _command { get; set; }
 
@@ -108,9 +107,8 @@ namespace RG_testing.UnitTest
            
             string str = _emitter.Emit();
             Assert.IsTrue(G01Regex.IsMatch(str) || G00Regex.IsMatch(str));
-            
+
             Assert.AreEqual(0, _emitter.Warnings.Count());
-          
         }
     }
 }
