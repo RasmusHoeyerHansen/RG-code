@@ -1,96 +1,194 @@
-﻿using System.Collections.Generic;
-using RG_code.AST;
+﻿using RG_code.AST;
+using RG_code.AstVisitors.Visitor_Interfaces;
 
 namespace RG_code.AstVisitors
 {
-    public abstract class ScopeBuilder<TKey, TValue> : IStackTraveller<TKey, TValue>
+    /// <summary>
+    ///     Methods used to build the scopes
+    /// </summary>
+    public sealed class ScopeBuilder : ScopeTraveller<string, Declaration>, IStatementVisitor<Ast>, IProgramVisitor<Ast>, IBoolVisitor<Ast>, IMathVisitor<Ast>, IPointVisitor<Ast>
     {
-        public ScopeBuilder()
+        public Ast Visit(Program node)
         {
-            ScopeStack.Push(new Scope<TKey, TValue>(null));
+            foreach (Statement nodeProgramStatement in node.ProgramStatements) Visit(nodeProgramStatement);
+
+            return node;
         }
 
-        public ScopeBuilder(Stack<Scope<TKey,TValue>> stack)
+        public Ast Visit(GreaterThan node)
         {
-            ScopeStack = stack;
+            Visit((dynamic) node.LeftHandSide);
+            Visit((dynamic) node.RightHandSide);
+            node.Type = Type.Bool;
+            return node;
         }
 
-        public Stack<Scope<TKey,TValue>> ScopeStack { get; } = new();
-        public List<TypeError> Errors { get; } = new();
-
-        public virtual string GetErrorText()
+        public Ast Visit(LessThan node)
         {
-            string result = string.Empty;
-
-            if (Errors.Count == 0)
-                return "No type error";
-
-            result += "Type Errors: \n";
-            foreach (TypeError typeErrors in Errors) result += typeErrors.ToString() + '\n';
-            return result;
+            Visit((dynamic) node.LeftHandSide);
+            Visit((dynamic) node.RightHandSide);
+            node.Type = Type.Bool;
+            return node;
         }
 
-        public void EnterScope()
+        public Ast Visit(Equals node)
         {
-            //Create new scope and set parent to current scope
-            var scopeToEnter = new Scope<TKey, TValue>(ScopeStack.Peek());
-            //Add contained scope to child scope
-            ScopeStack.Peek().ChildScopes.Add(scopeToEnter);
-            //Enter scope
-            ScopeStack.Push(scopeToEnter);
+            Visit((dynamic) node.LeftHandSide);
+            Visit((dynamic) node.RightHandSide);
+            node.Type = Type.Number;
+            return node;
         }
 
-
-        public void ExitScope()
+        public Ast Visit(Loop node)
         {
-            ScopeStack.Pop();
+            Visit((dynamic) node.Condition);
+
+            EnterScope();
+
+            foreach (Ast ast in node.Body) Visit((dynamic) ast);
+
+            ExitScope();
+            return node;
         }
 
-        protected Declaration GetDeclaration(NameReference node)
+        public Ast Visit(Assign node)
         {
-            return GetDeclaration(node.Name);
+            Ast q = Visit((dynamic) node.Value);
+            node.Type = q.Type;
+            return node;
         }
-        
 
-
-        protected Declaration GetDeclaration(string nodeName)
+        public Ast Visit(NameReference node)
         {
-            Scope<TKey,TValue> foundScope;
-            ScopeStack.TryPeek(out foundScope);
-            Declaration foundDeclaration;
+            if (!IsDeclared(node.Name))
+                Errors.Add(new TypeError(node, TypeError.ErrorType.NotDeclared));
 
-            while (foundScope != null)
-            {
-                if (foundScope.ContainedVariables.TryGetValue(nodeName, out foundDeclaration)) return foundDeclaration;
+            return node;
+        }
 
-                foundScope = foundScope.ParentScope;
-            }
+        public Ast Visit(Declaration node)
+        {
+            //Visit values
+            Visit((dynamic)node.Value);
+            //If already declared, add error, else add the declaration
+            if (IsDeclared(node))
+                Errors.Add(new TypeError(node, TypeError.ErrorType.DoubleDeclared));
+            else
+                ScopeStack.Peek().ContainedVariables.Add(node.Name, node);
+
 
             return null;
         }
-        
-        protected Scope<TKey, TValue> GetStartScope()
-        {
-            Scope<TKey,TValue> foundScope = ScopeStack.Peek();
 
-            while (foundScope.ParentScope != null)
+
+        public Ast Visit(Plus node)
+        {
+            Visit((dynamic) node.LeftHandSide);
+            Visit((dynamic) node.RightHandSide);
+            node.Type = Type.Number;
+            return node;
+        }
+
+        public Ast Visit(Minus node)
+        {
+            Visit((dynamic) node.LeftHandSide);
+            Visit((dynamic) node.RightHandSide);
+            node.Type = Type.Number;
+            return node;
+        }
+
+        public Ast Visit(Multiplication node)
+        {
+            Visit((dynamic) node.LeftHandSide);
+            Visit((dynamic) node.RightHandSide);
+            node.Type = Type.Number;
+
+            return node;
+        }
+
+        public Ast Visit(Divide node)
+        {
+            Visit((dynamic) node.LeftHandSide);
+            Visit((dynamic) node.RightHandSide);
+            node.Type = Type.Number;
+
+            return node;
+        }
+
+        public Ast Visit(Power node)
+        {
+            Visit((dynamic) node.LeftHandSide);
+            Visit((dynamic) node.RightHandSide);
+            node.Type = Type.Number;
+            return node;
+        }
+
+        public Ast Visit(Number node)
+        {
+            node.Type = Type.Number;
+            return node;
+        }
+
+        public Ast Visit(Point node)
+        {
+            Visit((dynamic) node.XValue);
+            Visit((dynamic) node.YValue);
+            node.Type = Type.Point;
+            return node;
+        }
+
+        public Ast Visit(Line node)
+        {
+            Visit((dynamic) node.FromPoint);
+
+            foreach (Ast ast in node.ToChain) Visit((dynamic) ast);
+
+            return node;
+        }
+
+        public Ast Visit(Curve node)
+        {
+            Visit((dynamic) node.FromPoint);
+            foreach (Ast ast in node.ToChain) Visit((dynamic) ast);
+
+            Visit((dynamic) node.Angle);
+            return node;
+        }
+
+        public Ast Visit(If node)
+        {
+            EnterScope();
+            foreach (Ast ast in node.Body)
             {
-                foundScope = foundScope.ParentScope;
+                dynamic q = Visit((dynamic) ast);
             }
 
-            return foundScope;
+            ExitScope();
 
+            return Visit((dynamic) node.Condition);
         }
 
-        protected bool IsDeclared(string nodeName)
+        public Ast Visit(IfElse node)
         {
-            return GetDeclaration(nodeName) is null ? false : true;
+            EnterScope();
+            foreach (Ast ast in node.Body)
+                Visit((dynamic) ast);
+
+            ExitScope();
+            EnterScope();
+            foreach (Ast ast in node.ElseBody)
+                Visit((dynamic) ast);
+
+            ExitScope();
+
+
+            return Visit((dynamic) node.Condition);
         }
 
-        protected bool IsDeclared(Declaration node)
+        public Ast Visit(Statement statement)
         {
-            return IsDeclared(node.Name);
+            ScopeStack.Peek().ContainedStatements.Add(statement);
+            return Visit((dynamic) statement);
         }
     }
-    
 }

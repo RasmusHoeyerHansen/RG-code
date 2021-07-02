@@ -28,14 +28,21 @@ namespace RG_code
             //PrettyPrinter printer = new PrettyPrinter();
             //ast.Accept(printer);
 
-            DeclarationChecker declarationChecker = new();
-            declarationChecker.Visit(ast);
-            PrintErrors("Declaration errors: ", declarationChecker.Errors);
+            ScopeBuilder scopeBuilder = new();
+            scopeBuilder.Visit(ast);
+            PrintErrors("Declaration errors: ", scopeBuilder.Errors);
 
 
-            ExpressionUsageChecker exprChecker = new(declarationChecker.ScopeStack);
+            ExpressionUsageChecker exprChecker = new(scopeBuilder.ScopeStack);
             exprChecker.Visit(ast);
             PrintErrors("Expression errors: ", exprChecker.Errors);
+
+            
+            
+                        
+            
+            
+            
         }
 
         private static void PrintErrors(IEnumerable<TypeError> errs)

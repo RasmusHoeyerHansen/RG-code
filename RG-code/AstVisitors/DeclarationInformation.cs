@@ -21,10 +21,23 @@ namespace RG_code.AstVisitors
 
         public int FirstUsageStatementNumber { get; }
         public  int LatestUsageNumber { get; set; }
-        public Statement LastStatement { get; set; }
+        public Statement LatestStatement { get; set; }
         public Declaration Dcl { get; }
 
         public Scope<string, Declaration> LatestUsageScope { get;  set; }
 
+    }
+    
+    public class AllocationInformation : DeclarationInformation
+    {
+        public AllocationInformation(Scope<string, Declaration> latestUsageScope, Declaration dcl) : base(latestUsageScope, dcl)
+        {
+        }
+
+        public AllocationInformation(Scope<string, Declaration> latestUsageScope, Declaration dcl, int firstUsageNumber, Statement firstUsageStatement) : base(latestUsageScope, dcl, firstUsageNumber, firstUsageStatement)
+        {
+        }
+        
+        
     }
 }

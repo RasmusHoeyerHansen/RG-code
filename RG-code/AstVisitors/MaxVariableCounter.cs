@@ -10,14 +10,31 @@ using Type = RG_code.AST.Type;
 
 namespace RG_code.AstVisitors
 {
-    public class VariableAllocatorVisitor<TVisit> : MaxCounter<string, Declaration>, IVariableCounterVisitor<TVisit>
+    public class MaxVariableCounter<TVisit> : ScopeTraveller<string, Declaration>, IVariableCounterVisitor<TVisit>
         where TVisit : Ast
     {
+        
+        private int _maxNeededVariables = 0;
+
+        public int MaxNeededVariables
+        {
+            get => _maxNeededVariables;
+            set
+            {
+                if (value > _maxNeededVariables)
+                {
+                    _maxNeededVariables = value;
+                }
+            }
+        }
 
         private TryAddList<Declaration> UsedDeclarations { get; set; } = new TryAddList<Declaration>();
 
-        public VariableAllocatorVisitor(Stack<Scope<string, Declaration>> stack) : base(stack)
+       
+
+        public MaxVariableCounter(Stack<Scope<string, Declaration>> stack) : base(stack)
         {
+
         }
 
 
@@ -110,10 +127,10 @@ namespace RG_code.AstVisitors
             switch (n.Type)
             {
                 case Type.Point:
-                    MaxNeededVariables += 2;
+                    MaxNeededVariables = 2;
                     break;
                 case Type.Number:
-                    MaxNeededVariables += 1;
+                    MaxNeededVariables = 1;
                     break;
             }
 
@@ -147,7 +164,15 @@ namespace RG_code.AstVisitors
 
         public TVisit Visit(Curve node)
         {
-            throw new NotImplementedException();
+            Visit((dynamic) node.FromPoint);
+            foreach (Ast ast in node.ToChain)
+            {
+                Visit((dynamic) ast);
+            }
+            Visit((dynamic) node.Angle);
+            Visit((dynamic) node.FromPoint);
+            
+            return (dynamic) node;
         }
 
         public TVisit Visit(GreaterThan node)
@@ -203,12 +228,11 @@ namespace RG_code.AstVisitors
         }
 
 
-        public TVisit Visit(Statement node)
+        public TVisit Visit(Statement statement)
         {
-            Visit((dynamic) node);
-            MaxNeededVariables = UsedDeclarations.Count();
+            Visit((dynamic) statement);
             UsedDeclarations.Clear();
-            return (dynamic) node;
+            return (dynamic) statement;
         }
     }
 }

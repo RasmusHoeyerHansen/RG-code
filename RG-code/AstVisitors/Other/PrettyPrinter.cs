@@ -147,5 +147,10 @@ namespace RG_code
             foreach (IAst nodeChild in node.Children) Visit((dynamic) nodeChild);
             return node;
         }
+
+        public Ast Visit(Statement statement)
+        {
+                return Visit((dynamic) statement);
+        }
     }
 }

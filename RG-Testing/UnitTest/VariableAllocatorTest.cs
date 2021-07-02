@@ -51,7 +51,7 @@ namespace RG_testing.UnitTest
         [TestCase("point q = (1,1); line from q to (2,1);",2)]
         [TestCase("number b = 2; number a = 1; point q = (a,b);",2)]
         [TestCase("point q = (1,1); number b = 1; number a = 2; repeat until a < 1 begin point p = (2,a); point p2 = q;" +
-                  " end loop; line from q to (b,1);",8)]
+                  " end loop; line from q to (b,1);",2)]
         public void Usage_GivesCorrectMaxNeededVariables(string code, int expected)
         {
             var result = CountNeededVariables<Program, RGCodeParser.ProgramContext>(code);
@@ -63,7 +63,7 @@ namespace RG_testing.UnitTest
             where TContext : ParserRuleContext
         {
             TAst ast = CreateAst<TAst, TContext>(code);
-            IVariableCounterVisitor<Ast> counter = new VariableAllocatorVisitor<Ast>(TypeChecker.ScopeStack);
+            IVariableCounterVisitor<Ast> counter = new MaxVariableCounter<Ast>(TypeChecker.ScopeStack);
             counter.Visit((dynamic)ast);
             return counter;
         }

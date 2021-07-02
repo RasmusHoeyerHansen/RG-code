@@ -8,7 +8,7 @@ using Type = RG_code.AST.Type;
 
 namespace RG_code.AstVisitors
 {
-    public class ExpressionUsageChecker : ScopeBuilder<string, Declaration>
+    public class ExpressionUsageChecker : ScopeTraveller<string, Declaration>
     {
         public ExpressionUsageChecker(Stack<Scope<string, Declaration>> scope) : base(scope)
         {
