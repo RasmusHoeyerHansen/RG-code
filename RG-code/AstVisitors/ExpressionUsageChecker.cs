@@ -8,9 +8,9 @@ using Type = RG_code.AST.Type;
 
 namespace RG_code.AstVisitors
 {
-    public class ExpressionUsageChecker : StackTraveller, IStatementVisitor<Type>, IProgramVisitor<Ast>
+    public class ExpressionUsageChecker : StackDeclarationTracker<string, Declaration>
     {
-        public ExpressionUsageChecker(Stack<Scope> scope) : base(scope)
+        public ExpressionUsageChecker(Stack<Scope<string, Declaration>> scope) : base(scope)
         {
         }
         

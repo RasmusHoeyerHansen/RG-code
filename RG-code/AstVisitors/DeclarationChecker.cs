@@ -6,7 +6,7 @@ namespace RG_code.AstVisitors
     /// <summary>
     ///     Methods used to build the scopes
     /// </summary>
-    public sealed class DeclarationChecker : StackTraveller, IStatementVisitor<Ast>, IProgramVisitor<Ast>
+    public sealed class DeclarationChecker : StackDeclarationTracker<string, Declaration>, IStatementVisitor<Ast>, IProgramVisitor<Ast>
     {
         public Ast Visit(Program node)
         {
@@ -183,6 +183,11 @@ namespace RG_code.AstVisitors
 
 
             return Visit((dynamic) node.Condition);
+        }
+
+        public Ast Visit(Statement node)
+        {
+            return Visit((dynamic) node);
         }
     }
 }

@@ -10,17 +10,17 @@ namespace RG_testing
     [TestFixture]
     public partial class DeclarationCheckerTest : AstDependable
     {
-        private DeclarationChecker _declarationChecker;
+        private DeclarationChecker _checker;
 
         [SetUp]
         public void SetUp()
         {
-            _declarationChecker = new DeclarationChecker();
+            _checker = new DeclarationChecker();
         }
 
         public void TearDown()
         {
-            _declarationChecker = null;
+            _checker = null;
         }
         
         [TestCase("point b = (2,2); point b = (2,2);")]
@@ -28,8 +28,8 @@ namespace RG_testing
         public void Error_ReportsDoubleDeclarations(string declarationText)
         {
             Ast ast = CreateAst<Program, RGCodeParser.ProgramContext>(declarationText);
-            _declarationChecker.Visit((dynamic)ast);
-            Assert.IsTrue(_declarationChecker.Errors.Count() != 0);
+            _checker.Visit((dynamic)ast);
+            Assert.IsTrue(_checker.Errors.Count() != 0);
         }
         
         
@@ -41,14 +41,14 @@ namespace RG_testing
         public void Error_ReportsNumberOfExpectedDoubleDeclarationErrors(string declarationText, int expectedErrors)
         {
             var ast = CreateAst<Program, RGCodeParser.ProgramContext>(declarationText);
-            _declarationChecker.Visit((dynamic)ast);
+            _checker.Visit((dynamic)ast);
 
-            bool allAreDoubleDeclError = _declarationChecker.Errors.All(err =>
+            bool allAreDoubleDeclError = _checker.Errors.All(err =>
             {
                 return err.TypeOfError == TypeError.ErrorType.DoubleDeclared;
             });
             
-            Assert.IsTrue(_declarationChecker.Errors.Count() == expectedErrors);
+            Assert.IsTrue(_checker.Errors.Count() == expectedErrors);
             Assert.IsTrue(allAreDoubleDeclError);
             
         }
@@ -58,10 +58,10 @@ namespace RG_testing
         public void Error_ReportsSameNameDeclarations(string declarationText)
         {
             Program ast = CreateAst<Program, RGCodeParser.ProgramContext>(declarationText);
-            _declarationChecker.Visit((dynamic)ast);
-            Assert.IsTrue(_declarationChecker.Errors.Count() != 0);
+            _checker.Visit((dynamic)ast);
+            Assert.IsTrue(_checker.Errors.Count() != 0);
             
-            bool allAreDoubleDeclError = _declarationChecker.Errors.All(err =>
+            bool allAreDoubleDeclError = _checker.Errors.All(err =>
             {
                 return err.TypeOfError == TypeError.ErrorType.DoubleDeclared;
             });
@@ -73,9 +73,9 @@ namespace RG_testing
         public void Error_ReportsExpectedNumberOfSameNameDeclarations(string declarationText)
         {
             Program ast = CreateAst<Program, RGCodeParser.ProgramContext>(declarationText);
-            _declarationChecker.Visit((dynamic)ast);
-            Assert.IsTrue(_declarationChecker.Errors.Count() != 0);
-            bool allAreDoubleDeclError = _declarationChecker.Errors.All(err =>
+            _checker.Visit((dynamic)ast);
+            Assert.IsTrue(_checker.Errors.Count() != 0);
+            bool allAreDoubleDeclError = _checker.Errors.All(err =>
             {
                 return err.TypeOfError == TypeError.ErrorType.DoubleDeclared;
             });
@@ -105,15 +105,15 @@ namespace RG_testing
             //Arrange
             var ast = CreateAst<Program, RGCodeParser.ProgramContext>(declarationText);
             //Act
-            _declarationChecker.Visit((dynamic)ast);
+            _checker.Visit((dynamic)ast);
             
             //Assert
-            bool allAreNotDeclError = _declarationChecker.Errors.All(err =>
+            bool allAreNotDeclError = _checker.Errors.All(err =>
             {
                 return err.TypeOfError == TypeError.ErrorType.NotDeclared;
             });
             
-            Assert.AreEqual(_declarationChecker.Errors.Count(), expectedErrors);
+            Assert.AreEqual(_checker.Errors.Count(), expectedErrors);
             Assert.IsTrue(allAreNotDeclError);
         }
 
@@ -126,7 +126,7 @@ namespace RG_testing
             //Arrange
             Ast ast = CreateAst<Declaration, RGCodeParser.VardecContext>(code);
             //Act
-            _declarationChecker.Visit((dynamic)ast);
+            _checker.Visit((dynamic)ast);
 
             Assert.IsTrue(ast.Type == Type.Number);
         }
@@ -140,7 +140,7 @@ namespace RG_testing
             //Arrange
             var ast = CreateAst<Declaration, RGCodeParser.VardecContext>(code);
             //Act
-            _declarationChecker.Visit((dynamic)ast);
+            _checker.Visit((dynamic)ast);
             Assert.IsTrue(ast.Type == Type.Point);
         }
 
@@ -154,14 +154,14 @@ namespace RG_testing
         {
             Line ast = CreateAst<Line, RGCodeParser.LineContext>(code);
             //Act
-            _declarationChecker.Visit(ast);
+            _checker.Visit(ast);
             
-            var allErrorCorrect = _declarationChecker.Errors.All(err =>
+            var allErrorCorrect = _checker.Errors.All(err =>
             {
                 return err.TypeOfError == TypeError.ErrorType.NotDeclared;
             });
             
-            Assert.AreEqual(amountOfErrors, _declarationChecker.Errors.Count());
+            Assert.AreEqual(amountOfErrors, _checker.Errors.Count());
             Assert.IsTrue(allErrorCorrect);
         }
         
@@ -178,14 +178,14 @@ namespace RG_testing
         {
             Curve ast = CreateAst<Curve, RGCodeParser.CurveContext>(code);
             //Act
-            _declarationChecker.Visit((dynamic) ast);
+            _checker.Visit((dynamic) ast);
             
-            var allErrorCorrect = _declarationChecker.Errors.All(err =>
+            var allErrorCorrect = _checker.Errors.All(err =>
             {
                 return err.TypeOfError == TypeError.ErrorType.NotDeclared;
             });
             
-            Assert.AreEqual(amountOfErrors, _declarationChecker.Errors.Count());
+            Assert.AreEqual(amountOfErrors, _checker.Errors.Count());
             Assert.IsTrue(allErrorCorrect);
         }
         
@@ -213,10 +213,10 @@ namespace RG_testing
         public void Fixture_GivesProgramNode(string file, string fixtureSubDir)
         {
             Ast ast = CreateAst<Program, RGCodeParser.ProgramContext>(file, fixtureSubDir);
-            _declarationChecker.Visit((dynamic) ast);
+            _checker.Visit((dynamic) ast);
             Assert.IsTrue(ast is Program);
 
-            Assert.AreEqual(0, _declarationChecker.Errors.Count);
+            Assert.AreEqual(0, _checker.Errors.Count);
 
 
         }

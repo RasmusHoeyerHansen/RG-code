@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Text;
 using Antlr4.Runtime.Misc;
+using Microsoft.VisualBasic.CompilerServices;
 using RG_code.AST;
 
 namespace RG_code.AstVisitors
@@ -50,7 +52,7 @@ namespace RG_code.AstVisitors
 
         public Ast Visit(Line node)
         {
-            throw new System.NotImplementedException();
+            return null;
         }
 
         public Ast Visit(Curve node)
@@ -70,16 +72,25 @@ namespace RG_code.AstVisitors
             return new Pair<Ast, string>(node, gCode);
         }
 
-        public IList<Warning> Warnings { get; }
+        public IEnumerable<Warning> Warnings { get; }
+        
+        
     }
+
+    public enum LineType
+    {
+        G00,
+        G01
+    }
+
 
     public interface IEmitter
     {
         public string Emit();
-        public IList<Pair<Ast, string>> AstGCodePairs { get; set; }
+        public IList<Pair<Ast, string>> AstGCodePairs { get; }
         public Pair<Ast, string> CreatePair(Ast node, string gCode);
 
-        public IList<Warning> Warnings { get; }
+        public IEnumerable<Warning> Warnings { get; }
     }
 
     public class Warning
@@ -104,8 +115,8 @@ namespace RG_code.AstVisitors
     {
         
     }
-    
-
-    
-    
+    public static class FormatStrings
+    {
+        public const string DoubleFixedPoint = "0.###################################################################################################################################################################################################################################################################################################################################################";
+    }
 }

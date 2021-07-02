@@ -3,19 +3,19 @@ using RG_code.AST;
 
 namespace RG_code.AstVisitors
 {
-    public abstract class StackTraveller
+    public abstract class StackDeclarationTracker<TKey, TValue> : IStackTraveller<TKey, TValue>
     {
-        public StackTraveller()
+        public StackDeclarationTracker()
         {
-            ScopeStack.Push(new Scope(null));
+            ScopeStack.Push(new Scope<TKey, TValue>(null));
         }
 
-        public StackTraveller(Stack<Scope> stack)
+        public StackDeclarationTracker(Stack<Scope<TKey,TValue>> stack)
         {
             ScopeStack = stack;
         }
 
-        public Stack<Scope> ScopeStack { get; } = new();
+        public Stack<Scope<TKey,TValue>> ScopeStack { get; } = new();
         public List<TypeError> Errors { get; } = new();
 
         public virtual string GetErrorText()
@@ -30,13 +30,13 @@ namespace RG_code.AstVisitors
             return result;
         }
 
-        protected void EnterScope()
+        public void EnterScope()
         {
-            ScopeStack.Push(new Scope(ScopeStack.Peek()));
+            ScopeStack.Push(new Scope<TKey,TValue>(ScopeStack.Peek()));
         }
 
 
-        protected void ExitScope()
+        public void ExitScope()
         {
             ScopeStack.Pop();
         }
@@ -49,7 +49,7 @@ namespace RG_code.AstVisitors
 
         protected Declaration GetDeclaration(string nodeName)
         {
-            Scope foundScope;
+            Scope<TKey,TValue> foundScope;
             ScopeStack.TryPeek(out foundScope);
             Declaration foundDeclaration;
 
@@ -73,4 +73,5 @@ namespace RG_code.AstVisitors
             return IsDeclared(node.Name);
         }
     }
+    
 }
