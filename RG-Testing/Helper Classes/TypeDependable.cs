@@ -8,7 +8,7 @@ namespace RG_testing.HelperClasses
 
         public TypeDependable()
         {
-            TypeChecker = new ExpressionUsageChecker(DclChecker.ScopeStack);
+            TypeChecker = new ExpressionUsageChecker(DclDeclarationChecker.ScopeStack);
         }
 
         protected override T CreateAst<T, Context>(string filename, string dirName)

@@ -7,18 +7,18 @@ namespace RG_testing.HelperClasses
 {
     public class ScopeDependable : AstDependable
     {
-        protected DeclarationChecker DclChecker { get; set; }
+        protected DeclarationChecker DclDeclarationChecker { get; set; }
 
         public ScopeDependable()
         {
-            DclChecker = new DeclarationChecker();
+            DclDeclarationChecker = new DeclarationChecker();
         }
         protected Stack<Scope<string, Declaration>> Scopes;
         protected override T CreateAst<T, Context>(string filename, string dirName)
         {
             var node = base.CreateAst<T, Context>(filename, dirName);
-            DclChecker.Visit((dynamic)node);
-            Scopes = DclChecker.ScopeStack;
+            DclDeclarationChecker.Visit((dynamic)node);
+            Scopes = DclDeclarationChecker.ScopeStack;
             return node;
         }
 
@@ -26,8 +26,8 @@ namespace RG_testing.HelperClasses
         {
             var node = base.CreateAst<T, Context>(codeExpression);
             
-            DclChecker.Visit((dynamic)node);
-            Scopes = DclChecker.ScopeStack;
+            DclDeclarationChecker.Visit((dynamic)node);
+            Scopes = DclDeclarationChecker.ScopeStack;
             return (T)node;
         }
     }

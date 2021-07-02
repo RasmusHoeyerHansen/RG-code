@@ -15,8 +15,8 @@ namespace RG_code.AstVisitors
         public override Ast VisitProgram(RGCodeParser.ProgramContext context)
         {
             RGCodeParser.StatementContext[] q = context.statement();
-            List<Ast> programBody = new();
-            foreach (RGCodeParser.StatementContext statementContext in q) programBody.Add(Visit(statementContext));
+            List<Statement> programBody = new();
+            foreach (RGCodeParser.StatementContext statementContext in q) programBody.Add((Statement)Visit(statementContext));
 
             return new Program(programBody, context.Start);
         }

@@ -4,7 +4,7 @@ using Antlr4.Runtime;
 
 namespace RG_code.AST
 {
-    public class If : Ast
+    public class If : Statement
     {
         public If(Ast condition, IEnumerable<Ast> body, IToken token) : base(token)
         {

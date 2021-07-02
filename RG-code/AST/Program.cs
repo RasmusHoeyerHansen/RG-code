@@ -5,10 +5,10 @@ namespace RG_code.AST
 {
     public class Program : Ast
     {
-        public IEnumerable<Ast> ProgramStatements { get; private set; }
+        public IEnumerable<Statement> ProgramStatements { get; private set; }
 
 
-        public Program(IEnumerable<Ast> statements, IToken token) : base(null, token)
+        public Program(IEnumerable<Statement> statements, IToken token) : base(null, token)
         {
             ProgramStatements = statements;
             foreach (Ast statement in statements)

@@ -6,11 +6,11 @@ namespace RG_code.AstVisitors
     /// <summary>
     ///     Methods used to build the scopes
     /// </summary>
-    public sealed class DeclarationChecker : StackDeclarationTracker<string, Declaration>, IStatementVisitor<Ast>, IProgramVisitor<Ast>
+    public sealed class DeclarationChecker : ScopeBuilder<string, Declaration>, IStatementVisitor<Ast>, IProgramVisitor<Ast>
     {
         public Ast Visit(Program node)
         {
-            foreach (Ast nodeProgramStatement in node.ProgramStatements) Visit((dynamic) nodeProgramStatement);
+            foreach (Statement nodeProgramStatement in node.ProgramStatements) Visit(nodeProgramStatement);
 
             return node;
         }
@@ -187,6 +187,7 @@ namespace RG_code.AstVisitors
 
         public Ast Visit(Statement node)
         {
+            ScopeStack.Peek().ContainedStatements.Add(node);
             return Visit((dynamic) node);
         }
     }

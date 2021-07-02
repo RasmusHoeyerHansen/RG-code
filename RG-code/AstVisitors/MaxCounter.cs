@@ -4,7 +4,7 @@ using RG_code.AstVisitors.Visitor_Interfaces;
 
 namespace RG_code.AstVisitors
 {
-    public abstract class MaxDeclarationCounter<TKey, TValue> : StackDeclarationTracker<TKey, TValue>, IVariableCounter<TKey, TValue>
+    public abstract class MaxCounter<TKey, TValue> : ScopeBuilder<TKey, TValue>, IVariableCounter<TKey, TValue>
     where TValue : Ast
     {
         private int _maxNeededVariables = 0;
@@ -20,11 +20,10 @@ namespace RG_code.AstVisitors
             }
         }
 
-        public MaxDeclarationCounter(Stack<Scope<TKey, TValue>> stack) : base(stack)
+        public MaxCounter(Stack<Scope<TKey, TValue>> stack) : base(stack)
         {
         }
 
-        public virtual int DeclarationCount { get; protected set; }
         
     }
 }

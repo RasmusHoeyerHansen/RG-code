@@ -3,14 +3,14 @@ using RG_code.AST;
 
 namespace RG_code.AstVisitors
 {
-    public abstract class StackDeclarationTracker<TKey, TValue> : IStackTraveller<TKey, TValue>
+    public abstract class ScopeBuilder<TKey, TValue> : IStackTraveller<TKey, TValue>
     {
-        public StackDeclarationTracker()
+        public ScopeBuilder()
         {
             ScopeStack.Push(new Scope<TKey, TValue>(null));
         }
 
-        public StackDeclarationTracker(Stack<Scope<TKey,TValue>> stack)
+        public ScopeBuilder(Stack<Scope<TKey,TValue>> stack)
         {
             ScopeStack = stack;
         }
@@ -32,7 +32,12 @@ namespace RG_code.AstVisitors
 
         public void EnterScope()
         {
-            ScopeStack.Push(new Scope<TKey,TValue>(ScopeStack.Peek()));
+            //Create new scope and set parent to current scope
+            var scopeToEnter = new Scope<TKey, TValue>(ScopeStack.Peek());
+            //Add contained scope to child scope
+            ScopeStack.Peek().ChildScopes.Add(scopeToEnter);
+            //Enter scope
+            ScopeStack.Push(scopeToEnter);
         }
 
 
@@ -45,6 +50,7 @@ namespace RG_code.AstVisitors
         {
             return GetDeclaration(node.Name);
         }
+        
 
 
         protected Declaration GetDeclaration(string nodeName)
@@ -61,6 +67,19 @@ namespace RG_code.AstVisitors
             }
 
             return null;
+        }
+        
+        protected Scope<TKey, TValue> GetStartScope()
+        {
+            Scope<TKey,TValue> foundScope = ScopeStack.Peek();
+
+            while (foundScope.ParentScope != null)
+            {
+                foundScope = foundScope.ParentScope;
+            }
+
+            return foundScope;
+
         }
 
         protected bool IsDeclared(string nodeName)

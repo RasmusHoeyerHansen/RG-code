@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Dynamic;
 using System.Linq;
+using Antlr4.Runtime.Misc;
 using Microsoft.VisualBasic;
 using RG_code.AST;
 using RG_code.AstVisitors.Visitor_Interfaces;
@@ -8,7 +10,7 @@ using Type = RG_code.AST.Type;
 
 namespace RG_code.AstVisitors
 {
-    public class VariableAllocatorVisitor<TVisit> : MaxDeclarationCounter<string, Declaration>, IVariableCounterVisitor<TVisit>
+    public class VariableAllocatorVisitor<TVisit> : MaxCounter<string, Declaration>, IVariableCounterVisitor<TVisit>
         where TVisit : Ast
     {
 
@@ -21,9 +23,9 @@ namespace RG_code.AstVisitors
 
         public TVisit Visit(Program node)
         {
-            foreach (Ast nodeProgramStatement in node.ProgramStatements)
+            foreach (Statement nodeProgramStatement in node.ProgramStatements)
             {
-                Visit((dynamic) nodeProgramStatement);
+                Visit(nodeProgramStatement);
             }
 
             return (dynamic) node;
@@ -32,16 +34,6 @@ namespace RG_code.AstVisitors
 
         public TVisit Visit(Declaration node)
         {
-            switch (node.Type)
-            {
-                case Type.Point:
-                    MaxNeededVariables += 2;
-                    break;
-                case Type.Number:
-                    MaxNeededVariables += 1;
-                    break;
-            }
-
             Visit((dynamic) node.Value);
             return (dynamic) node;
         }
@@ -54,13 +46,10 @@ namespace RG_code.AstVisitors
         public TVisit Visit(Loop node)
         {
             Visit((dynamic) node.Condition);
-            EnterScope();
             foreach (Ast ast in node.Body)
             {
                 Visit((dynamic) ast);
             }
-
-            ExitScope();
             return (dynamic) node;
         }
 
@@ -222,5 +211,4 @@ namespace RG_code.AstVisitors
             return (dynamic) node;
         }
     }
-
 }
