@@ -15,7 +15,7 @@ namespace RG_code.AstVisitors
         private int _maxVariables { get; }
         private InformationMapper InformationMapper { get; set; }
         private int AvailableVariables { get; set; }
-        private Dictionary<string, Pair<int, int>> PointVarMap { get;  }
+        private Dictionary<string, PointStringPair> PointVarMap { get;  }
         private Dictionary<string, int> NumberVarMap { get;  }
 
         private StringBuilder Builder = new StringBuilder();
@@ -27,10 +27,9 @@ namespace RG_code.AstVisitors
             _maxVariables = availableVariables;
             AvailableVariables = _maxVariables;
             InformationMapper = new InformationMapper(stack);
-            PointVarMap = new Dictionary<string, Pair<int, int>>();
+            PointVarMap = new Dictionary<string, PointStringPair>();
             NumberVarMap = new Dictionary<string, int>();
             InformationMapper.TraverseScope(GetStartScope());
-
         }
 
         public void TraverseScope(Scope<string,Declaration> scope)
@@ -86,10 +85,10 @@ namespace RG_code.AstVisitors
                 throw new NotSupportedException($"Cannot create program using only {_maxVariables} variables.");
         }
 
-        private Pair<int, int>NextTwoAvailableVariables()
+        private PointStringPair NextTwoAvailableVariables()
         {
             if (AvailableVariables - 2 >= 0)
-                return new Pair<int, int>(AvailableVariables, AvailableVariables-1);
+                return new PointStringPair(AvailableVariables, AvailableVariables-1);
             else 
                 throw new NotSupportedException($"Cannot create program using only {_maxVariables} variables.");
         }
@@ -115,45 +114,62 @@ namespace RG_code.AstVisitors
 
         public string Visit(Assign node)
         {
-            Pair<int, int> pRes;
-            int nRes;
-            if (NumberVarMap.TryGetValue(node.Id, out nRes))
+            if (NumberVarMap.TryGetValue(node.Id, out int nRes))
             {
-                Builder.Append($"#{nRes} = {Visit(node.Value)}\n");
+                return $"#{nRes} = {Visit(node.Value)}\n";
             }
-            else if (PointVarMap.TryGetValue(node.Id, out pRes))
+            else if (PointVarMap.TryGetValue(node.Id, out PointStringPair pair))
             {
-                //TODO Create two variable assignments for node.
-            }
-            else throw new ArgumentException("Node err");
+                switch (node.Value)
+                {
+                    case Point p:
+                        return 
+                            $"#{pair.XVariable} = {Visit((dynamic) p.XValue)} \n #{pair.YVariable} = {Visit((dynamic) p.YValue)}\n";
 
-            
-            
+                    case NameReference n:
+                        return $"#{pair.XVariable} = {PointVarMap[n.Name].XVariable} \n #{pair.YVariable} = {PointVarMap[n.Name].YVariable}";
+                }
+            }
             
             return Builder.ToString();
         }
 
         public string Visit(NameReference node)
         {
-            Pair<int, int> pRes;
-            int nRes;
-            if (NumberVarMap.TryGetValue(node.Name, out nRes))
+            if (NumberVarMap.TryGetValue(node.Name, out int nRes))
             {
                 return nRes.ToString();
             }
-            else if (PointVarMap.TryGetValue(node.Name, out pRes))
+            else if (PointVarMap.TryGetValue(node.Name, out PointStringPair pRes))
             {
-                //TODO Create To References
+                return pRes.XVariable.ToString() + ',' + pRes.YVariable.ToString();
             }
-            else throw new ArgumentException("Node err");
+            throw new ArgumentException("Node err");
 
-            return Builder.ToString();
         }
 
         public string Visit(Declaration node)
         {
             Allocate(node);
-            return node;
+
+            if (NumberVarMap.TryGetValue(node.Name, out int nRes))
+            {
+                return $"#{nRes} = {Visit(node.Value)}\n";
+            }
+            else if (PointVarMap.TryGetValue(node.Name, out PointStringPair pair))
+            {
+                switch (node.Value)
+                {
+                    case Point p:
+                        return 
+                            $"#{pair.XVariable} = {Visit((dynamic) p.XValue)} \n #{pair.YVariable} = {Visit((dynamic) p.YValue)}\n";
+
+                    case NameReference n:
+                        return $"#{pair.XVariable} = {PointVarMap[n.Name].XVariable} \n #{pair.YVariable} = {PointVarMap[n.Name].YVariable}";
+                }
+            } 
+            throw new ArgumentException("Node err");
+
         }
 
         public string Visit(If node)
@@ -185,7 +201,7 @@ namespace RG_code.AstVisitors
 
         public string Visit(Statement statement)
         {
-            Visit((dynamic) statement);
+            string result = Visit((dynamic) statement);
 
             foreach (DeclarationInformation info in ScopeDeclarationInformation)
             {
@@ -193,17 +209,18 @@ namespace RG_code.AstVisitors
                     Deallocate(info.Dcl);
             }
 
-            return statement.;
+            return result;
         }
 
         public string Visit(Program node)
         {
-
-
+            var result = "";
             foreach (Statement nodeProgramStatement in node.ProgramStatements)
             {
-                Visit(nodeProgramStatement);
+                result+= Visit(nodeProgramStatement);
             }
+
+            return result;
         }
 
         public string Visit(GreaterThan node)
@@ -259,6 +276,24 @@ namespace RG_code.AstVisitors
         public string Visit(Expression node)
         {
             throw new NotImplementedException();
+        }
+
+        internal class PointStringPair
+        {
+            public int XVariable{get;}
+            public int YVariable { get; }
+
+            public PointStringPair(Pair<int,int> pair)
+            {
+                XVariable = pair.a;
+                YVariable = pair.b;
+            }
+
+            public PointStringPair(int x, int y)
+            {
+                XVariable = x;
+                YVariable = y;
+            }
         }
     }
 
